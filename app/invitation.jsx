@@ -172,13 +172,12 @@ export default function Invitation() {
           <section className="profile-section" id="profil" aria-labelledby="profile-title">
             <img
               className="profile-transition"
-              src="/assets/section-assets/profile-top-transition.png"
+              src="/assets/section-assets/profile-top-transition-white.png?v=edge-crop"
               alt=""
             />
 
             <div className="profile-surface">
               <header className="profile-intro section-reveal">
-                <p className="section-kicker">By the grace of God</p>
                 <h2 id="profile-title">With Love</h2>
                 <p>
                   Dengan penuh sukacita, kami mengundang Bapak/Ibu/Saudara/i
@@ -196,8 +195,7 @@ export default function Invitation() {
                   />
                 </div>
                 <p className="person-role">The Groom</p>
-                <h3>Aldo</h3>
-                <p className="person-fullname">Aldo Pratama</p>
+                <h3>Aldo Pratama</h3>
                 <p>
                   Putra pertama dari
                   <br />
@@ -220,8 +218,7 @@ export default function Invitation() {
                   />
                 </div>
                 <p className="person-role">The Bride</p>
-                <h3>Tiara</h3>
-                <p className="person-fullname">Tiara Maharani</p>
+                <h3>Tiara Maharani</h3>
                 <p>
                   Putri pertama dari
                   <br />
@@ -230,6 +227,12 @@ export default function Invitation() {
                 <a href="#" aria-label="Instagram Tiara">@tiaramaharani</a>
               </article>
             </div>
+
+            <img
+              className="profile-bottom-transition"
+              src="/assets/section-assets/profile-bottom-transition.png?v=edge-crop"
+              alt=""
+            />
           </section>
         </div>
       </main>

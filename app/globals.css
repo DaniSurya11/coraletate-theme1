@@ -74,7 +74,6 @@ button {
   width: 100vw;
   max-width: 500px;
   height: 100vh;
-  height: 100dvh;
   margin: 0;
   background:
     url("/assets/inner-bg.png") 44% 50% / cover no-repeat,
@@ -491,27 +490,42 @@ button {
 .profile-section {
   position: relative;
   margin-top: 0;
+  overflow: hidden;
 }
 
 .profile-transition {
   position: relative;
   z-index: 2;
   display: block;
-  width: 108%;
-  height: 142px;
-  margin-left: -4%;
-  object-fit: cover;
-  object-position: top center;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: 18px 0 -56px;
 }
 
 .profile-surface {
   position: relative;
   z-index: 1;
-  margin-top: -7px;
+  width: 100%;
+  margin: 0;
   padding: 62px 25px 92px;
   overflow: hidden;
-  background: transparent;
+  background-color: #fdfaf6;
+  background-image: url("/assets/section-assets/profile-main-panel.png");
+  background-position: center top;
+  background-repeat: repeat-y;
+  background-size: 100% auto;
   text-align: center;
+}
+
+.profile-bottom-transition {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: -56px 0 0;
 }
 
 .profile-intro {
