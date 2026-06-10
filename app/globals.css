@@ -697,17 +697,27 @@ body.invitation-open > .inner-fixed-background {
 }
 
 html.invitation-open {
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: auto;
 }
 
 body.invitation-open {
-  overflow: visible;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 body.invitation-open .invitation {
-  overflow: visible;
+  overflow-x: clip;
+  overflow-y: visible;
   background: transparent;
+}
+
+@supports not (overflow: clip) {
+  html.invitation-open,
+  body.invitation-open,
+  body.invitation-open .invitation {
+    overflow-x: hidden;
+  }
 }
 
 @keyframes background-arrival {
