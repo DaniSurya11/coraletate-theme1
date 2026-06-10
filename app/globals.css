@@ -562,10 +562,10 @@ button {
   position: absolute;
   z-index: 0;
   top: 5.5%;
-  left: 13.5%;
-  width: 73%;
+  left: 17%;
+  width: 75%;
   height: 87%;
-  border-radius: 46% 46% 43% 43% / 28% 28% 42% 42%;
+  border-radius: 52% 52% 52% 52% / 32% 32% 32% 100%;
   object-fit: cover;
 }
 
