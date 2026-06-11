@@ -562,20 +562,23 @@ button {
 }
 
 .portrait-frame {
+  --portrait-group-x: -5.8%;
   position: relative;
   width: min(77vw, 300px);
   aspect-ratio: 942 / 1416;
   margin: 0 auto 23px;
+  transform: translateX(var(--portrait-group-x));
 }
 
 .portrait-photo {
   position: absolute;
   z-index: 0;
   top: 5.5%;
-  left: 17%;
+  left: 18.3%;
   width: 75%;
   height: 87%;
-  border-radius: 52% 52% 52% 52% / 32% 32% 32% 100%;
+  border-radius: 52% / 32%;
+  border-bottom-left-radius: 52% 34%;
   object-fit: cover;
 }
 
