@@ -266,12 +266,6 @@ export default function Invitation() {
             id="save-date"
             aria-labelledby="save-date-title"
           >
-            <img
-              className="save-date-transition"
-              src="/assets/section-assets/save-date-top-transition.png"
-              alt=""
-            />
-
             <div className="save-date-portrait section-reveal">
               <div className="save-date-photo-window">
                 <img
