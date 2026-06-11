@@ -5,6 +5,12 @@ import { useEffect, useRef, useState } from "react";
 export default function Invitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("Nama Tamu");
+  const [countdown, setCountdown] = useState({
+    days: "00",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
+  });
   const invitationRef = useRef(null);
 
   useEffect(() => {
@@ -55,6 +61,26 @@ export default function Invitation() {
 
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const weddingDate = new Date("2026-10-30T08:00:00+07:00").getTime();
+
+    const updateCountdown = () => {
+      const distance = Math.max(0, weddingDate - Date.now());
+
+      setCountdown({
+        days: String(Math.floor(distance / 86400000)).padStart(2, "0"),
+        hours: String(Math.floor((distance / 3600000) % 24)).padStart(2, "0"),
+        minutes: String(Math.floor((distance / 60000) % 60)).padStart(2, "0"),
+        seconds: String(Math.floor((distance / 1000) % 60)).padStart(2, "0"),
+      });
+    };
+
+    updateCountdown();
+    const timer = window.setInterval(updateCountdown, 1000);
+
+    return () => window.clearInterval(timer);
   }, []);
 
   const openInvitation = () => {
@@ -233,6 +259,61 @@ export default function Invitation() {
               src="/assets/section-assets/profile-bottom-transition.png?v=edge-crop"
               alt=""
             />
+          </section>
+
+          <section
+            className="save-date-section"
+            id="save-date"
+            aria-labelledby="save-date-title"
+          >
+            <img
+              className="save-date-transition"
+              src="/assets/section-assets/save-date-top-transition.png"
+              alt=""
+            />
+
+            <div className="save-date-portrait section-reveal">
+              <div className="save-date-photo-window">
+                <img
+                  className="save-date-photo"
+                  src="/assets/demo-couple.jpg"
+                  alt="Aldo dan Tiara"
+                />
+              </div>
+
+              <div className="save-date-statement">
+                <time dateTime="2026-10-30">
+                  <span>30</span>
+                  <span>OCT</span>
+                  <span>2026</span>
+                </time>
+                <p>save the date</p>
+              </div>
+
+              <img
+                className="save-date-frame"
+                src="/assets/section-assets/save-date-photo-frame.png"
+                alt=""
+              />
+            </div>
+
+            <div className="save-date-countdown section-reveal">
+              <h2 id="save-date-title">Menuju hari bahagia</h2>
+
+              <div className="save-date-countdown-grid" aria-label="Hitung mundur pernikahan">
+                {[
+                  ["days", "Hari"],
+                  ["hours", "Jam"],
+                  ["minutes", "Menit"],
+                  ["seconds", "Detik"],
+                ].map(([unit, label]) => (
+                  <div className="save-date-countdown-item" key={unit}>
+                    <strong>{countdown[unit]}</strong>
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
         </div>
       </main>
