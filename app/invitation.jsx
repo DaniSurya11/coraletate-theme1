@@ -309,6 +309,46 @@ export default function Invitation() {
               </div>
             </div>
           </section>
+
+          <section className="event-section" id="event" aria-labelledby="event-title">
+            <div className="event-top-ornament" aria-hidden="true" />
+
+            <div className="event-main-card">
+              <article className="event-detail section-reveal">
+                <h2 id="event-title">Pemberkatan</h2>
+                <time dateTime="2026-10-30">Jumat, 30 Oktober 2026</time>
+                <p className="event-time">08.00 WIB</p>
+                <p className="event-venue">Kediaman Mempelai Wanita</p>
+                <address>Jalan Kemerdekaan No. 1945</address>
+                <a
+                  className="event-location-button"
+                  href="https://maps.google.com"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Lihat Lokasi
+                </a>
+              </article>
+
+              <article className="event-detail event-detail-reception section-reveal">
+                <h2>Resepsi</h2>
+                <time dateTime="2024-10-10">Sabtu, 10 Oktober 2024</time>
+                <p className="event-time">12.00 WIB</p>
+                <p className="event-venue">Kediaman Mempelai Wanita</p>
+                <address>Jalan kemerdekaanno 1945</address>
+                <a
+                  className="event-location-button"
+                  href="https://studio.goodchoice.id/alisha/?to=Nama+Tamu#"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Lihat Lokasi
+                </a>
+              </article>
+            </div>
+
+            <div className="event-lower-ornament" aria-hidden="true" />
+          </section>
         </div>
       </main>
     </>
