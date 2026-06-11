@@ -654,7 +654,7 @@ button {
   z-index: 2;
   width: min(84vw, 350px);
   aspect-ratio: 1023 / 1537;
-  margin: clamp(52px, 14vw, 70px) auto 30px;
+  margin: clamp(52px, 14vw, 70px) auto clamp(6px, 2vw, 10px);
 }
 
 .save-date-photo-window {
@@ -743,7 +743,7 @@ button {
 }
 
 .save-date-countdown h2 {
-  margin: 0 auto 24px;
+  margin: 0 auto clamp(12px, 3.5vw, 16px);
   color: var(--gold-dark);
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: 36px;
