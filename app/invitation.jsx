@@ -2,9 +2,31 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const galleryPhotos = [
+  "isai-jane-w1.jpg",
+  "isai-jane-w20.jpg",
+  "isai-jane-w2.jpg",
+  "isai-jane-w3.jpg",
+  "isai-jane-w4.jpg",
+  "isai-jane-w8.jpg",
+  "isai-jane-w9.jpg",
+  "isai-jane-w5.jpg",
+  "isai-jane-w6.jpg",
+  "isai-jane-w7.jpg",
+  "isai-jane-w16.jpg",
+  "isai-jane-w12.jpg",
+  "isai-jane-w14.jpg",
+  "isai-jane-w15.jpg",
+  "isai-jane-w10.jpg",
+  "isai-jane-w17.jpg",
+  "isai-jane-w11.jpg",
+  "isai-jane-w13.jpg",
+];
+
 export default function Invitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("Nama Tamu");
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState(null);
   const [countdown, setCountdown] = useState({
     days: "00",
     hours: "00",
@@ -64,6 +86,36 @@ export default function Invitation() {
   }, []);
 
   useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const gallery = invitationRef.current?.querySelector(".gallery-scroll-reveal");
+
+    if (!gallery) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add("is-visible");
+        observer.disconnect();
+      },
+      {
+        rootMargin: "0px 0px -15% 0px",
+        threshold: 0,
+      },
+    );
+
+    observer.observe(gallery);
+    return () => observer.disconnect();
+  }, [isOpen]);
+
+  useEffect(() => {
     const weddingDate = new Date("2026-10-30T08:00:00+07:00").getTime();
 
     const updateCountdown = () => {
@@ -82,6 +134,31 @@ export default function Invitation() {
 
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (activeGalleryIndex === null) {
+      return undefined;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setActiveGalleryIndex(null);
+      }
+
+      if (event.key === "ArrowLeft") {
+        setActiveGalleryIndex(
+          (current) => (current - 1 + galleryPhotos.length) % galleryPhotos.length,
+        );
+      }
+
+      if (event.key === "ArrowRight") {
+        setActiveGalleryIndex((current) => (current + 1) % galleryPhotos.length);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeGalleryIndex]);
 
   const openInvitation = () => {
     if (isOpen) {
@@ -413,8 +490,92 @@ export default function Invitation() {
               </form>
             </div>
           </section>
+
+          <section className="gallery-section" id="gallery" aria-labelledby="gallery-title">
+            <img
+              className="gallery-left-ornament"
+              src="/assets/section-assets/gallery-left-ornament.png"
+              alt=""
+            />
+
+            <div className="gallery-inner">
+              <h2 id="gallery-title">Gallery</h2>
+
+              <div className="gallery-grid gallery-scroll-reveal">
+                {galleryPhotos.map((photo, index) => (
+                  <button
+                    className={`gallery-item ${index >= 16 ? "gallery-item-wide" : ""}`}
+                    key={photo}
+                    type="button"
+                    aria-label={`Buka foto galeri ${index + 1}`}
+                    onClick={() => setActiveGalleryIndex(index)}
+                  >
+                    <img
+                      src={`/assets/gallery-photos/${photo}`}
+                      alt={`Momen Aldo dan Tiara ${index + 1}`}
+                      width={index === 17 ? 1800 : index >= 10 ? 1350 : 1200}
+                      height={index === 17 ? 1352 : 1800}
+                      loading="lazy"
+                    />
+                    <span className="gallery-item-overlay" aria-hidden="true" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
         </div>
       </main>
+
+      {activeGalleryIndex !== null && (
+        <div
+          className="gallery-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Pratinjau foto galeri"
+          onClick={() => setActiveGalleryIndex(null)}
+        >
+          <button
+            className="gallery-lightbox-close"
+            type="button"
+            aria-label="Tutup pratinjau foto"
+            onClick={() => setActiveGalleryIndex(null)}
+          >
+            &times;
+          </button>
+
+          <button
+            className="gallery-lightbox-nav gallery-lightbox-prev"
+            type="button"
+            aria-label="Foto sebelumnya"
+            onClick={(event) => {
+              event.stopPropagation();
+              setActiveGalleryIndex(
+                (activeGalleryIndex - 1 + galleryPhotos.length) % galleryPhotos.length,
+              );
+            }}
+          >
+            &#8249;
+          </button>
+
+          <img
+            src={`/assets/gallery-photos/${galleryPhotos[activeGalleryIndex]}`}
+            alt={`Momen Aldo dan Tiara ${activeGalleryIndex + 1}`}
+            onClick={(event) => event.stopPropagation()}
+          />
+
+          <button
+            className="gallery-lightbox-nav gallery-lightbox-next"
+            type="button"
+            aria-label="Foto berikutnya"
+            onClick={(event) => {
+              event.stopPropagation();
+              setActiveGalleryIndex((activeGalleryIndex + 1) % galleryPhotos.length);
+            }}
+          >
+            &#8250;
+          </button>
+        </div>
+      )}
     </>
   );
 }
