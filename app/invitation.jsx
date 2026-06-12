@@ -349,6 +349,70 @@ export default function Invitation() {
 
             <div className="event-lower-ornament" aria-hidden="true" />
           </section>
+
+          <section className="rsvp-section" id="rsvp" aria-labelledby="rsvp-title">
+            <div className="rsvp-card section-reveal">
+              <img
+                className="rsvp-photo"
+                src="/assets/rsvp-photo.jpg"
+                alt="Foto pasangan Aldo dan Tiara"
+              />
+
+              <h2 id="rsvp-title">RSVP</h2>
+
+              <p className="rsvp-intro">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga
+                apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa
+                restu kepada kedua mempelai. Atas kehadiran serta doa restu,
+                kami ucapkan terima kasih.
+              </p>
+
+              <form className="rsvp-form" onSubmit={(event) => event.preventDefault()}>
+                <div className="rsvp-field">
+                  <label htmlFor="rsvp-name">Nama</label>
+                  <input
+                    id="rsvp-name"
+                    name="name"
+                    type="text"
+                    placeholder="..."
+                    required
+                  />
+                </div>
+
+                <div className="rsvp-field">
+                  <label htmlFor="rsvp-guests">Jumlah tamu (orang)</label>
+                  <div className="rsvp-select-wrap">
+                    <select id="rsvp-guests" name="guests" defaultValue="0" required>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
+                </div>
+
+                <fieldset className="rsvp-field rsvp-attendance">
+                  <legend>Konfirmasi Kehadiran</legend>
+                  <label className="rsvp-radio">
+                    <input type="radio" name="attendance" value="Hadir" required />
+                    <span>Hadir</span>
+                  </label>
+                  <label className="rsvp-radio">
+                    <input
+                      type="radio"
+                      name="attendance"
+                      value="Maaf, saya tidak bisa hadir"
+                      required
+                    />
+                    <span>Maaf, saya tidak bisa hadir</span>
+                  </label>
+                </fieldset>
+
+                <button className="rsvp-submit" type="submit">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </section>
         </div>
       </main>
     </>

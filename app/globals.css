@@ -919,6 +919,198 @@ button {
   background: url("/assets/section-assets/event-lower-ornament.png") center top / 100% auto no-repeat;
 }
 
+.rsvp-section {
+  --rsvp-accent: var(--ink);
+  --rsvp-title: var(--gold);
+  --rsvp-button: var(--gold);
+  --rsvp-button-hover: var(--gold-dark);
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: clamp(24px, 7.7vw, 38px);
+}
+
+.rsvp-card {
+  display: flex;
+  width: 100%;
+  max-width: 414px;
+  margin: 0 auto;
+  padding: clamp(18px, 5.1vw, 24px);
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 30px;
+  background: rgba(255, 252, 248, .86);
+}
+
+.rsvp-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 683 / 1024;
+  object-fit: cover;
+  border: 2px solid #fff;
+  border-radius: 30px;
+}
+
+.rsvp-card h2 {
+  margin: 0;
+  color: var(--rsvp-title);
+  font-family: "Calabassas", "Italiana", "Times New Roman", serif;
+  font-size: clamp(64px, 21.5vw, 84px);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+}
+
+.rsvp-intro {
+  margin: 0;
+  color: var(--rsvp-accent);
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: clamp(14px, 3.85vw, 15px);
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.rsvp-form {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  flex-direction: column;
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+.rsvp-field {
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+}
+
+.rsvp-field > label:not(.rsvp-radio),
+.rsvp-attendance legend {
+  display: block;
+  margin: 0;
+  padding: 0 0 7px;
+  color: var(--rsvp-accent);
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: clamp(14px, 3.85vw, 15px);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.rsvp-field input[type="text"],
+.rsvp-field select {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--rsvp-accent);
+  border-radius: 30px;
+  background: #fff;
+  color: var(--rsvp-accent);
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: clamp(14px, 3.85vw, 15px);
+  font-weight: 300;
+  line-height: 1.4;
+  transition: box-shadow .3s ease;
+}
+
+.rsvp-field input[type="text"] {
+  padding: 8px 16px;
+}
+
+.rsvp-field input[type="text"]::placeholder {
+  color: var(--rsvp-accent);
+  opacity: .6;
+}
+
+.rsvp-field input[type="text"]:focus,
+.rsvp-field select:focus {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .1);
+  outline: 0;
+}
+
+.rsvp-select-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.rsvp-select-wrap::after {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  border-right: 1px solid var(--rsvp-accent);
+  border-bottom: 1px solid var(--rsvp-accent);
+  content: "";
+  pointer-events: none;
+  transform: translateY(-68%) rotate(45deg);
+}
+
+.rsvp-field select {
+  padding: 5px 38px 5px 14px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.rsvp-attendance {
+  display: flex;
+  flex-direction: column;
+}
+
+.rsvp-radio {
+  display: flex;
+  width: 100%;
+  min-height: 24px;
+  padding: 0;
+  align-items: center;
+  gap: clamp(8px, 2.5vw, 12px);
+  color: var(--rsvp-accent);
+  cursor: pointer;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: clamp(14px, 3.85vw, 15px);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.rsvp-radio input {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--gold);
+}
+
+.rsvp-submit {
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 30px;
+  background: var(--rsvp-button);
+  color: #fff;
+  cursor: pointer;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: clamp(14px, 3.85vw, 15px);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background .3s ease, transform .3s ease;
+}
+
+.rsvp-submit:hover,
+.rsvp-submit:focus-visible {
+  background: var(--rsvp-button-hover);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.rsvp-submit:active {
+  transform: translateY(0);
+}
+
 .section-reveal {
   opacity: 0;
   transform: translateY(30px);
