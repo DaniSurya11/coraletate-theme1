@@ -23,6 +23,14 @@ const galleryPhotos = [
   "isai-jane-w13.jpg",
 ];
 
+const loveStoryPhotos = [
+  "isai-jane-w4-150x150.jpg",
+  "isai-jane-w5-150x150.jpg",
+  "isai-jane-w6-150x150.jpg",
+  "isai-jane-w8-150x150.jpg",
+  "isai-jane-w2-150x150.jpg",
+];
+
 export default function Invitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("Nama Tamu");
@@ -90,20 +98,24 @@ export default function Invitation() {
       return undefined;
     }
 
-    const gallery = invitationRef.current?.querySelector(".gallery-scroll-reveal");
+    const revealElements = invitationRef.current?.querySelectorAll(
+      ".gallery-scroll-reveal, .love-story-carousel-reveal",
+    );
 
-    if (!gallery) {
+    if (!revealElements?.length) {
       return undefined;
     }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
 
-        entry.target.classList.add("is-visible");
-        observer.disconnect();
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
       },
       {
         rootMargin: "0px 0px -15% 0px",
@@ -111,7 +123,7 @@ export default function Invitation() {
       },
     );
 
-    observer.observe(gallery);
+    revealElements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, [isOpen]);
 
@@ -520,6 +532,61 @@ export default function Invitation() {
                     <span className="gallery-item-overlay" aria-hidden="true" />
                   </button>
                 ))}
+              </div>
+            </div>
+          </section>
+
+          <section
+            className="love-story-section"
+            id="love-story"
+            aria-labelledby="love-story-title"
+          >
+            <div className="love-story-inner">
+              <h2 id="love-story-title">Kisah Cinta</h2>
+
+              <div
+                className="love-story-carousel love-story-carousel-reveal"
+                aria-label="Foto perjalanan cinta Aldo dan Tiara"
+              >
+                <div className="love-story-track">
+                  {[...loveStoryPhotos, ...loveStoryPhotos].map((photo, index) => (
+                    <div
+                      className="love-story-photo"
+                      key={`${photo}-${index}`}
+                      aria-hidden={index >= loveStoryPhotos.length}
+                    >
+                      <img
+                        src={`/assets/story-photos/${photo}`}
+                        alt={
+                          index < loveStoryPhotos.length
+                            ? `Momen kisah cinta Aldo dan Tiara ${index + 1}`
+                            : ""
+                        }
+                        width="150"
+                        height="150"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="love-story-cards">
+                <article className="love-story-card">
+                  <h3>Awal pertemuan</h3>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+                    tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                  </p>
+                </article>
+
+                <article className="love-story-card">
+                  <h3>Menjalin Hubungan</h3>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+                    tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                  </p>
+                </article>
               </div>
             </div>
           </section>
