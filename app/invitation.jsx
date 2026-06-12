@@ -93,7 +93,7 @@ export default function Invitation() {
     document.body.classList.add("invitation-open");
 
     window.setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "auto" });
+      window.scrollTo({ top: 1, behavior: "auto" });
       window.dispatchEvent(new CustomEvent("invitation:opened"));
     }, 850);
   };

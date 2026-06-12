@@ -1008,7 +1008,7 @@ button {
   background: #fff;
   color: var(--rsvp-accent);
   font-family: "Roboto", Arial, sans-serif;
-  font-size: clamp(14px, 3.85vw, 15px);
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
   transition: box-shadow .3s ease;
