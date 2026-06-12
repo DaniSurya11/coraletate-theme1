@@ -549,23 +549,27 @@ export default function Invitation() {
                 aria-label="Foto perjalanan cinta Aldo dan Tiara"
               >
                 <div className="love-story-track">
-                  {[...loveStoryPhotos, ...loveStoryPhotos].map((photo, index) => (
+                  {[false, true].map((isDuplicate) => (
                     <div
-                      className="love-story-photo"
-                      key={`${photo}-${index}`}
-                      aria-hidden={index >= loveStoryPhotos.length}
+                      className="love-story-sequence"
+                      key={isDuplicate ? "duplicate" : "primary"}
+                      aria-hidden={isDuplicate}
                     >
-                      <img
-                        src={`/assets/story-photos/${photo}`}
-                        alt={
-                          index < loveStoryPhotos.length
-                            ? `Momen kisah cinta Aldo dan Tiara ${index + 1}`
-                            : ""
-                        }
-                        width="150"
-                        height="150"
-                        loading="lazy"
-                      />
+                      {loveStoryPhotos.map((photo, index) => (
+                        <div className="love-story-photo" key={photo}>
+                          <img
+                            src={`/assets/story-photos/${photo}`}
+                            alt={
+                              isDuplicate
+                                ? ""
+                                : `Momen kisah cinta Aldo dan Tiara ${index + 1}`
+                            }
+                            width="150"
+                            height="150"
+                            loading="eager"
+                          />
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>

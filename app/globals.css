@@ -1349,7 +1349,16 @@ button {
   align-items: center;
   gap: 7px;
   animation: love-story-marquee 15s linear infinite;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
   will-change: transform;
+}
+
+.love-story-sequence {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
 }
 
 .love-story-photo {
@@ -1577,8 +1586,8 @@ body.invitation-open .invitation {
 }
 
 @keyframes love-story-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-50% - 3.5px)); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(-50% - 3.5px), 0, 0); }
 }
 
 @media (max-height: 700px) {
