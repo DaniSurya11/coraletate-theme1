@@ -1270,6 +1270,12 @@ body.invitation-open .invitation {
   }
 }
 
+@media (max-width: 500px) {
+  body.invitation-open {
+    background: #f5efe3;
+  }
+}
+
 @media (min-width: 501px) {
   .invitation {
     box-shadow: 0 0 70px rgba(0, 0, 0, .35);
