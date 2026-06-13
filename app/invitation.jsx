@@ -42,6 +42,8 @@ export default function Invitation() {
     seconds: "00",
   });
   const invitationRef = useRef(null);
+  const loveStoryCarouselRef = useRef(null);
+  const loveStoryTrackRef = useRef(null);
 
   useEffect(() => {
     const guest = new URLSearchParams(window.location.search).get("to")?.trim();
@@ -98,15 +100,17 @@ export default function Invitation() {
       return undefined;
     }
 
-    const revealElements = invitationRef.current?.querySelectorAll(
-      ".gallery-scroll-reveal, .love-story-carousel-reveal",
+    const galleryReveal = invitationRef.current?.querySelector(".gallery-scroll-reveal");
+    const galleryImages = invitationRef.current?.querySelectorAll(".gallery-item img");
+    const loveStoryReveal = invitationRef.current?.querySelector(
+      ".love-story-carousel-reveal",
     );
 
-    if (!revealElements?.length) {
+    if (!galleryReveal || !galleryImages?.length || !loveStoryReveal) {
       return undefined;
     }
 
-    const observer = new IntersectionObserver(
+    const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
@@ -114,17 +118,58 @@ export default function Invitation() {
           }
 
           entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+          revealObserver.unobserve(entry.target);
         });
       },
       {
-        rootMargin: "0px 0px -15% 0px",
-        threshold: 0,
+        rootMargin: "0px 0px 75% 0px",
+        threshold: 0.01,
       },
     );
 
-    revealElements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
+    const imageObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          entry.target.classList.add("is-loaded");
+          imageObserver.unobserve(entry.target);
+        });
+      },
+      {
+        rootMargin: "0px",
+        threshold: 0.01,
+      },
+    );
+
+    const loveStoryObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          entry.target.classList.add("is-visible");
+          loveStoryObserver.unobserve(entry.target);
+        });
+      },
+      {
+        rootMargin: "0px",
+        threshold: 0.01,
+      },
+    );
+
+    revealObserver.observe(galleryReveal);
+    galleryImages.forEach((image) => imageObserver.observe(image));
+    loveStoryObserver.observe(loveStoryReveal);
+
+    return () => {
+      revealObserver.disconnect();
+      imageObserver.disconnect();
+      loveStoryObserver.disconnect();
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -171,6 +216,80 @@ export default function Invitation() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeGalleryIndex]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const carousel = loveStoryCarouselRef.current;
+    const track = loveStoryTrackRef.current;
+
+    if (!carousel || !track) {
+      return undefined;
+    }
+
+    let slideIndex = loveStoryPhotos.length;
+    let advanceTimer;
+    let transitionTimer;
+    let isAdvancing = false;
+
+    const updateSlideSize = () => {
+      const slideWidth = (carousel.clientWidth - 10) / 3;
+      carousel.style.setProperty("--love-story-slide-width", `${slideWidth}px`);
+      return slideWidth + 5;
+    };
+
+    const positionTrack = (animate) => {
+      track.style.transitionDuration = animate ? "3000ms" : "0ms";
+      track.style.transform = `translate3d(${-slideIndex * updateSlideSize()}px, 0, 0)`;
+    };
+
+    const advance = () => {
+      isAdvancing = true;
+      slideIndex += 1;
+      positionTrack(true);
+
+      transitionTimer = window.setTimeout(finishAdvance, 3500);
+    };
+
+    const finishAdvance = () => {
+      if (!isAdvancing) {
+        return;
+      }
+
+      isAdvancing = false;
+      window.clearTimeout(transitionTimer);
+
+      if (slideIndex >= loveStoryPhotos.length * 2) {
+        slideIndex = loveStoryPhotos.length;
+        positionTrack(false);
+        track.getBoundingClientRect();
+      }
+
+      advanceTimer = window.setTimeout(advance, 500);
+    };
+
+    const handleTransitionEnd = (event) => {
+      if (event.target === track && event.propertyName === "transform") {
+        finishAdvance();
+      }
+    };
+
+    positionTrack(false);
+    advanceTimer = window.setTimeout(advance, 500);
+    track.addEventListener("transitionend", handleTransitionEnd);
+
+    const resizeObserver = new ResizeObserver(() => positionTrack(false));
+    resizeObserver.observe(carousel);
+
+    return () => {
+      window.clearTimeout(advanceTimer);
+      window.clearTimeout(transitionTimer);
+      track.removeEventListener("transitionend", handleTransitionEnd);
+      resizeObserver.disconnect();
+    };
+  }, [isOpen]);
 
   const openInvitation = () => {
     if (isOpen) {
@@ -547,31 +666,29 @@ export default function Invitation() {
               <div
                 className="love-story-carousel love-story-carousel-reveal"
                 aria-label="Foto perjalanan cinta Aldo dan Tiara"
+                ref={loveStoryCarouselRef}
               >
-                <div className="love-story-track">
-                  {[false, true].map((isDuplicate) => (
+                <div className="love-story-track" ref={loveStoryTrackRef}>
+                  {[0, 1, 2].flatMap((sequenceIndex) =>
+                    loveStoryPhotos.map((photo, index) => (
                     <div
-                      className="love-story-sequence"
-                      key={isDuplicate ? "duplicate" : "primary"}
-                      aria-hidden={isDuplicate}
+                      className="love-story-photo"
+                      key={`${sequenceIndex}-${photo}`}
+                      aria-hidden={sequenceIndex !== 1}
                     >
-                      {loveStoryPhotos.map((photo, index) => (
-                        <div className="love-story-photo" key={photo}>
-                          <img
-                            src={`/assets/story-photos/${photo}`}
-                            alt={
-                              isDuplicate
-                                ? ""
-                                : `Momen kisah cinta Aldo dan Tiara ${index + 1}`
-                            }
-                            width="150"
-                            height="150"
-                            loading="eager"
-                          />
-                        </div>
-                      ))}
+                      <img
+                        src={`/assets/story-photos/${photo}`}
+                        alt={
+                          sequenceIndex === 1
+                            ? `Momen kisah cinta Aldo dan Tiara ${index + 1}`
+                            : ""
+                        }
+                        width="150"
+                        height="150"
+                        loading="eager"
+                      />
                     </div>
-                  ))}
+                  )))}
                 </div>
               </div>
 

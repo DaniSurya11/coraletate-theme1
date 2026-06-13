@@ -1166,7 +1166,7 @@ button {
 
 .gallery-scroll-reveal.is-visible {
   visibility: visible;
-  animation: gallery-zoom-in 1.25s both;
+  animation: gallery-zoom-in 1.25s ease;
 }
 
 .gallery-item {
@@ -1191,13 +1191,19 @@ button {
   display: block;
   width: 100%;
   height: auto;
-  transform: scale(1.17);
-  transform-origin: center center;
-  transition: filter .8s ease, transform .8s ease;
+  filter: opacity(0);
+  transform: scale(.5);
+  transform-origin: center top;
+  transition: filter .8s, transform .8s;
 }
 
-.gallery-item:hover img,
-.gallery-item:focus-visible img {
+.gallery-item img.is-loaded {
+  filter: none;
+  transform: scale(1.17);
+}
+
+.gallery-item:hover img.is-loaded,
+.gallery-item:focus-visible img.is-loaded {
   transform: scale(1);
 }
 
@@ -1347,22 +1353,15 @@ button {
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 7px;
-  animation: love-story-marquee 15s linear infinite;
+  gap: 5px;
   backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
+  transition-property: transform;
+  transition-timing-function: ease;
   will-change: transform;
 }
 
-.love-story-sequence {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 7px;
-}
-
 .love-story-photo {
-  flex: 0 0 calc((100cqw - 14px) / 3);
+  flex: 0 0 var(--love-story-slide-width, calc((100cqw - 10px) / 3));
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 20%;
@@ -1573,21 +1572,11 @@ body.invitation-open .invitation {
   50% {
     opacity: 1;
   }
-
-  100% {
-    opacity: 1;
-    transform: scale3d(1, 1, 1);
-  }
 }
 
 @keyframes love-story-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-@keyframes love-story-marquee {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(calc(-50% - 3.5px), 0, 0); }
 }
 
 @media (max-height: 700px) {
@@ -1640,9 +1629,6 @@ body.invitation-open .invitation {
     scroll-behavior: auto !important;
   }
 
-  .love-story-track {
-    transform: translateX(0);
-  }
 }
 
 
