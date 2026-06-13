@@ -38,12 +38,39 @@ const weddingGiftAccounts = [
   { bank: "BANK4", number: "4444444444", name: "Nama Lengkap4" },
 ];
 
+const initialWishes = [
+  {
+    id: 1,
+    name: "Keluarga & Sahabat",
+    message:
+      "Selamat menempuh hidup baru. Semoga cinta dan kebahagiaan selalu menyertai perjalanan kalian.",
+    date: "Hari ini",
+  },
+  {
+    id: 2,
+    name: "Sahabat Mempelai",
+    message:
+      "Semoga menjadi keluarga yang penuh kasih, saling menguatkan, dan selalu diberkahi.",
+    date: "1 hari yang lalu",
+  },
+  {
+    id: 3,
+    name: "Teman-teman",
+    message:
+      "Happy wedding, Aldo dan Tiara. Semoga setiap langkah baru kalian dipenuhi sukacita.",
+    date: "2 hari yang lalu",
+  },
+];
+
 export default function Invitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("Nama Tamu");
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(null);
   const [isGiftOpen, setIsGiftOpen] = useState(false);
   const [copiedGiftNumber, setCopiedGiftNumber] = useState("");
+  const [wishName, setWishName] = useState("");
+  const [wishMessage, setWishMessage] = useState("");
+  const [wishes, setWishes] = useState(initialWishes);
   const [countdown, setCountdown] = useState({
     days: "00",
     hours: "00",
@@ -345,6 +372,29 @@ export default function Invitation() {
     } else {
       setCopiedGiftNumber("");
     }
+  };
+
+  const submitWish = (event) => {
+    event.preventDefault();
+
+    const name = wishName.trim();
+    const message = wishMessage.trim();
+
+    if (!name || !message) {
+      return;
+    }
+
+    setWishes((current) => [
+      {
+        id: Date.now(),
+        name,
+        message,
+        date: "Baru saja",
+      },
+      ...current,
+    ]);
+    setWishName("");
+    setWishMessage("");
   };
 
   return (
@@ -834,6 +884,68 @@ export default function Invitation() {
                   </p>
                 </aside>
               </div>
+            </div>
+          </section>
+
+          <section
+            className="wishes-section"
+            id="wishes"
+            aria-labelledby="wishes-title"
+          >
+            <div className="wishes-heading section-reveal">
+              <h2 id="wishes-title">
+                Ucapan
+                <br />
+                &amp; Doa
+              </h2>
+              <p>
+                Sampaikan doa dan harapan terbaik di sini, saat kami memulai
+                perjalanan baru bersama.
+              </p>
+            </div>
+
+            <form className="wishes-form section-reveal" onSubmit={submitWish}>
+              <label className="wishes-field">
+                <span>Nama:</span>
+                <input
+                  type="text"
+                  value={wishName}
+                  onChange={(event) => setWishName(event.target.value)}
+                  placeholder="Tuliskan nama Anda"
+                  required
+                />
+              </label>
+
+              <label className="wishes-field">
+                <span>Ucapan &amp; doa:</span>
+                <textarea
+                  value={wishMessage}
+                  onChange={(event) => setWishMessage(event.target.value)}
+                  placeholder="Tuliskan ucapan dan doa terbaik"
+                  maxLength="1000"
+                  required
+                />
+              </label>
+
+              <button className="wishes-submit" type="submit">
+                Kirim
+              </button>
+            </form>
+
+            <div
+              className="wishes-list section-reveal"
+              aria-label="Daftar ucapan dan doa"
+              aria-live="polite"
+            >
+              {wishes.map((wish) => (
+                <article className="wish-card" key={wish.id}>
+                  <header>
+                    <h3>{wish.name}</h3>
+                    <time>{wish.date}</time>
+                  </header>
+                  <p>{wish.message}</p>
+                </article>
+              ))}
             </div>
           </section>
         </div>
