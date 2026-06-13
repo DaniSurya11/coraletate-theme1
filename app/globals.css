@@ -381,7 +381,7 @@ button {
 .ayat-section {
   position: relative;
   min-height: 950px;
-  padding: 62px 22px 0;
+  padding: 62px 22px clamp(36px, 10vw, 60px);
   overflow: hidden;
   text-align: center;
 }
@@ -515,7 +515,7 @@ button {
 
 .profile-section {
   position: relative;
-  margin-top: clamp(32px, 9vw, 52px);
+  margin-top: 0;
   overflow: hidden;
 }
 
@@ -1499,6 +1499,7 @@ button {
 }
 
 .wedding-gift-details {
+  --gift-details-height: 0px;
   display: flex;
   width: 100%;
   max-height: 0;
@@ -1510,22 +1511,23 @@ button {
   opacity: 0;
   visibility: hidden;
   transition:
-    max-height .55s cubic-bezier(.25, .8, .25, 1),
-    opacity .45s ease,
-    padding .55s cubic-bezier(.25, .8, .25, 1),
-    visibility 0s .55s;
+    max-height .58s cubic-bezier(.22, .72, .22, 1),
+    opacity .32s ease,
+    padding .58s cubic-bezier(.22, .72, .22, 1),
+    visibility 0s .58s;
+  will-change: max-height, opacity;
 }
 
 .wedding-gift-details.is-open {
-  max-height: 1300px;
+  max-height: var(--gift-details-height);
   padding-top: 10px;
   padding-bottom: 10px;
   opacity: 1;
   visibility: visible;
   transition:
-    max-height .55s cubic-bezier(.25, .8, .25, 1),
-    opacity .45s ease,
-    padding .55s cubic-bezier(.25, .8, .25, 1),
+    max-height .58s cubic-bezier(.22, .72, .22, 1),
+    opacity .32s ease,
+    padding .58s cubic-bezier(.22, .72, .22, 1),
     visibility 0s;
 }
 
@@ -1533,12 +1535,15 @@ button {
 .wedding-gift-note {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity .6s ease-out, transform .6s ease-out;
+  transition: opacity .42s ease-out, transform .42s ease-out;
+  transition-delay: 0s;
+  will-change: opacity, transform;
 }
 
 .wedding-gift-details.is-open > * {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto;
 }
 
 .wedding-gift-details.is-open > :nth-child(1) { transition-delay: .1s; }
@@ -1698,6 +1703,7 @@ button {
   padding: 78px 30px 30px;
   flex-direction: column;
   gap: 20px;
+  contain: layout paint;
   overflow: hidden;
 }
 
@@ -1850,7 +1856,7 @@ button {
   gap: 8px;
   overflow-x: hidden;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior-y: auto;
   scrollbar-color: rgba(167, 133, 62, .52) transparent;
   scrollbar-width: thin;
 }
@@ -1925,6 +1931,7 @@ button {
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
+  contain: layout paint;
   overflow: hidden;
   color: var(--ink);
   text-align: center;
@@ -2038,6 +2045,7 @@ button {
   transition:
     opacity .9s ease,
     transform 1s cubic-bezier(.2, .72, .22, 1);
+  will-change: opacity, transform;
 }
 
 .person-groom.section-reveal {
@@ -2051,6 +2059,7 @@ button {
 .section-reveal.is-visible {
   opacity: 1;
   transform: translate(0);
+  will-change: auto;
 }
 
 .invitation.is-open .cover-content {
@@ -2112,7 +2121,7 @@ body.invitation-open {
 
 body.invitation-open .invitation {
   overflow-x: clip;
-  overflow-y: visible;
+  overflow-y: clip;
   background: transparent;
 }
 
@@ -2121,6 +2130,7 @@ body.invitation-open .invitation {
   body.invitation-open,
   body.invitation-open .invitation {
     overflow-x: hidden;
+    overflow-y: hidden;
   }
 }
 

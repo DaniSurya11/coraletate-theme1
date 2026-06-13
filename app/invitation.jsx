@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const galleryPhotos = [
   "isai-jane-w1.jpg",
@@ -62,6 +62,55 @@ const initialWishes = [
   },
 ];
 
+function SaveDateCountdown() {
+  const [countdown, setCountdown] = useState({
+    days: "00",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
+  });
+
+  useEffect(() => {
+    const weddingDate = new Date("2026-10-30T08:00:00+07:00").getTime();
+
+    const updateCountdown = () => {
+      const distance = Math.max(0, weddingDate - Date.now());
+
+      setCountdown({
+        days: String(Math.floor(distance / 86400000)).padStart(2, "0"),
+        hours: String(Math.floor((distance / 3600000) % 24)).padStart(2, "0"),
+        minutes: String(Math.floor((distance / 60000) % 60)).padStart(2, "0"),
+        seconds: String(Math.floor((distance / 1000) % 60)).padStart(2, "0"),
+      });
+    };
+
+    updateCountdown();
+    const timer = window.setInterval(updateCountdown, 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="save-date-countdown section-reveal">
+      <h2 id="save-date-title">Menuju hari bahagia</h2>
+
+      <div className="save-date-countdown-grid" aria-label="Hitung mundur pernikahan">
+        {[
+          ["days", "Hari"],
+          ["hours", "Jam"],
+          ["minutes", "Menit"],
+          ["seconds", "Detik"],
+        ].map(([unit, label]) => (
+          <div className="save-date-countdown-item" key={unit}>
+            <strong>{countdown[unit]}</strong>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Invitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("Nama Tamu");
@@ -71,13 +120,8 @@ export default function Invitation() {
   const [wishName, setWishName] = useState("");
   const [wishMessage, setWishMessage] = useState("");
   const [wishes, setWishes] = useState(initialWishes);
-  const [countdown, setCountdown] = useState({
-    days: "00",
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
-  });
   const invitationRef = useRef(null);
+  const giftDetailsRef = useRef(null);
   const loveStoryCarouselRef = useRef(null);
   const loveStoryTrackRef = useRef(null);
 
@@ -208,25 +252,28 @@ export default function Invitation() {
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    const weddingDate = new Date("2026-10-30T08:00:00+07:00").getTime();
+  useLayoutEffect(() => {
+    const details = giftDetailsRef.current;
 
-    const updateCountdown = () => {
-      const distance = Math.max(0, weddingDate - Date.now());
+    if (!details) {
+      return undefined;
+    }
 
-      setCountdown({
-        days: String(Math.floor(distance / 86400000)).padStart(2, "0"),
-        hours: String(Math.floor((distance / 3600000) % 24)).padStart(2, "0"),
-        minutes: String(Math.floor((distance / 60000) % 60)).padStart(2, "0"),
-        seconds: String(Math.floor((distance / 1000) % 60)).padStart(2, "0"),
-      });
+    const updateGiftHeight = () => {
+      details.style.setProperty("--gift-details-height", `${details.scrollHeight}px`);
     };
 
-    updateCountdown();
-    const timer = window.setInterval(updateCountdown, 1000);
+    updateGiftHeight();
 
-    return () => window.clearInterval(timer);
-  }, []);
+    if (!window.ResizeObserver) {
+      return undefined;
+    }
+
+    const resizeObserver = new ResizeObserver(updateGiftHeight);
+    resizeObserver.observe(details);
+
+    return () => resizeObserver.disconnect();
+  }, [isGiftOpen]);
 
   useEffect(() => {
     if (activeGalleryIndex === null) {
@@ -590,23 +637,7 @@ export default function Invitation() {
               />
             </div>
 
-            <div className="save-date-countdown section-reveal">
-              <h2 id="save-date-title">Menuju hari bahagia</h2>
-
-              <div className="save-date-countdown-grid" aria-label="Hitung mundur pernikahan">
-                {[
-                  ["days", "Hari"],
-                  ["hours", "Jam"],
-                  ["minutes", "Menit"],
-                  ["seconds", "Detik"],
-                ].map(([unit, label]) => (
-                  <div className="save-date-countdown-item" key={unit}>
-                    <strong>{countdown[unit]}</strong>
-                    <span>{label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <SaveDateCountdown />
           </section>
 
           <section className="event-section" id="event" aria-labelledby="event-title">
@@ -834,6 +865,7 @@ export default function Invitation() {
               <div
                 className={`wedding-gift-details ${isGiftOpen ? "is-open" : ""}`}
                 id="wedding-gift-details"
+                ref={giftDetailsRef}
                 aria-hidden={!isGiftOpen}
               >
                 {weddingGiftAccounts.map((account) => (
@@ -960,12 +992,20 @@ export default function Invitation() {
                   <img
                     src="/assets/gallery-photos/isai-jane-w8.jpg"
                     alt="Aldo dan Tiara"
+                    width="1200"
+                    height="1800"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <img
                   className="closing-frame"
                   src="/assets/section-assets/coastal-closing-frame.png"
                   alt=""
+                  width="900"
+                  height="1120"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
