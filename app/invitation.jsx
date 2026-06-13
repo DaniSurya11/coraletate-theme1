@@ -948,6 +948,41 @@ export default function Invitation() {
               ))}
             </div>
           </section>
+
+          <section
+            className="closing-section"
+            id="closing"
+            aria-labelledby="closing-title"
+          >
+            <div className="closing-visual section-reveal">
+              <div className="closing-frame-wrap">
+                <div className="closing-photo-window">
+                  <img
+                    src="/assets/gallery-photos/isai-jane-w8.jpg"
+                    alt="Aldo dan Tiara"
+                  />
+                </div>
+                <img
+                  className="closing-frame"
+                  src="/assets/section-assets/coastal-closing-frame.png"
+                  alt=""
+                />
+              </div>
+
+              <h2 id="closing-title">Thankyou!</h2>
+            </div>
+
+            <div className="closing-message section-reveal">
+              <p>
+                Menjadi sebuah kebahagiaan bagi kami apabila
+                Bapak/Ibu/Saudara/i berkenan hadir dalam hari bahagia ini.
+                Terima kasih atas segala ucapan, doa, dan perhatian yang
+                diberikan.
+              </p>
+              <p className="closing-see-you">See you on our big day!</p>
+              <p className="closing-couple">Aldo &amp; Tiara</p>
+            </div>
+          </section>
         </div>
       </main>
 

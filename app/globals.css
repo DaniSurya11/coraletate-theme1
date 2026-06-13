@@ -8,6 +8,14 @@
   font-weight: 400;
 }
 
+@font-face {
+  font-family: "Windsong";
+  src: url("/assets/fonts/windsong.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 :root {
   --ivory: #f8f2e7;
   --gold: #a7853e;
@@ -440,7 +448,7 @@ button {
   display: flex;
   width: min(82vw, 410px);
   min-height: 0;
-  margin: -7vw auto 0;
+  margin: clamp(-32px, -5.5vw, -18px) auto 0;
   padding: 50px 0 20px;
   align-items: center;
   flex-direction: column;
@@ -507,7 +515,7 @@ button {
 
 .profile-section {
   position: relative;
-  margin-top: 0;
+  margin-top: clamp(32px, 9vw, 52px);
   overflow: hidden;
 }
 
@@ -820,7 +828,7 @@ button {
 
 .event-top-ornament {
   z-index: 1;
-  min-height: clamp(230px, 35dvh, 326px);
+  aspect-ratio: 826 / 556;
   background: url("/assets/section-assets/event-top-ornament.png") center bottom / 100% auto no-repeat;
 }
 
@@ -1904,6 +1912,124 @@ button {
   font-size: 14px;
   font-weight: 300;
   line-height: 1.5;
+}
+
+.closing-section {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-top: clamp(64px, 18vw, 90px);
+  padding: 0 0 max(50px, env(safe-area-inset-bottom));
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  color: var(--ink);
+  text-align: center;
+}
+
+.closing-visual {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.closing-frame-wrap {
+  position: relative;
+  width: min(77%, 350px);
+  aspect-ratio: 900 / 1120;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.closing-photo-window {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 65%;
+  height: 65%;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #d9d7d0;
+  transform: translate(-50%, -50%);
+}
+
+.closing-photo-window::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(28, 48, 64, .22), rgba(28, 48, 64, .22));
+  content: "";
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.closing-photo-window img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.closing-frame {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.closing-visual h2 {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  margin: -10% 0 0;
+  padding-top: 30px;
+  color: var(--blue);
+  font-family: "Windsong", "Calabassas", cursive;
+  font-size: clamp(68px, 18vw, 91px);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.closing-message {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  margin: clamp(6px, 2vw, 12px) 0 50px;
+  padding: 4px clamp(16px, 5vw, 24px) 10px;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.closing-message p {
+  width: min(100%, 370px);
+  margin: 0;
+  color: var(--ink);
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.closing-message .closing-see-you {
+  margin-top: 0;
+}
+
+.closing-message .closing-couple {
+  color: var(--gold);
+  font-family: "Calabassas", "Italiana", "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
 }
 
 .section-reveal {
