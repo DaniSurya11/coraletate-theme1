@@ -31,10 +31,19 @@ const loveStoryPhotos = [
   "isai-jane-w2-150x150.jpg",
 ];
 
+const weddingGiftAccounts = [
+  { bank: "BANK1", number: "1111111111", name: "Nama Lengkap1" },
+  { bank: "BANK2", number: "2222222222", name: "Nama Lengkap2" },
+  { bank: "BANK3", number: "3333333333", name: "Nama Lengkap3" },
+  { bank: "BANK4", number: "4444444444", name: "Nama Lengkap4" },
+];
+
 export default function Invitation() {
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("Nama Tamu");
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(null);
+  const [isGiftOpen, setIsGiftOpen] = useState(false);
+  const [copiedGiftNumber, setCopiedGiftNumber] = useState("");
   const [countdown, setCountdown] = useState({
     days: "00",
     hours: "00",
@@ -304,6 +313,38 @@ export default function Invitation() {
       window.scrollTo({ top: 0, behavior: "auto" });
       window.dispatchEvent(new CustomEvent("invitation:opened"));
     }, 850);
+  };
+
+  const copyGiftNumber = async (number) => {
+    let isCopied = false;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(number);
+        isCopied = true;
+      }
+    } catch {
+      isCopied = false;
+    }
+
+    if (!isCopied) {
+      const copyField = document.createElement("textarea");
+      copyField.value = number;
+      copyField.setAttribute("readonly", "");
+      copyField.style.position = "fixed";
+      copyField.style.opacity = "0";
+      document.body.appendChild(copyField);
+      copyField.select();
+      isCopied = document.execCommand("copy");
+      copyField.remove();
+    }
+
+    if (isCopied) {
+      setCopiedGiftNumber(number);
+      window.setTimeout(() => setCopiedGiftNumber(""), 1600);
+    } else {
+      setCopiedGiftNumber("");
+    }
   };
 
   return (
@@ -708,6 +749,90 @@ export default function Invitation() {
                     tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
                   </p>
                 </article>
+              </div>
+            </div>
+          </section>
+
+          <section
+            className="wedding-gift-section"
+            id="wedding-gift"
+            aria-labelledby="wedding-gift-title"
+          >
+            <div className="wedding-gift-panel section-reveal">
+              <h2 id="wedding-gift-title">
+                Hadiah
+                <br />
+                Pernikahan
+              </h2>
+
+              <p className="wedding-gift-intro">
+                Kehadiran dan doa Anda adalah hadiah terindah bagi kami. Namun,
+                apabila berkenan memberikan tanda kasih, silakan gunakan informasi
+                di bawah ini:
+              </p>
+
+              <button
+                className="wedding-gift-toggle"
+                type="button"
+                aria-expanded={isGiftOpen}
+                aria-controls="wedding-gift-details"
+                onClick={() => setIsGiftOpen((current) => !current)}
+              >
+                {isGiftOpen ? "Sembunyikan" : "Tampilkan Gift"}
+              </button>
+
+              <div
+                className={`wedding-gift-details ${isGiftOpen ? "is-open" : ""}`}
+                id="wedding-gift-details"
+                aria-hidden={!isGiftOpen}
+              >
+                {weddingGiftAccounts.map((account) => (
+                  <article className="wedding-gift-card" key={account.number}>
+                    <h3>{account.bank}</h3>
+                    <div className="wedding-gift-number-row">
+                      <span>{account.number}</span>
+                      <button
+                        className="wedding-gift-copy"
+                        type="button"
+                        aria-label={`Salin nomor rekening ${account.number}`}
+                        onClick={() => copyGiftNumber(account.number)}
+                      >
+                        {copiedGiftNumber === account.number ? (
+                          "Tersalin"
+                        ) : (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M8 7V5.8A2.8 2.8 0 0 1 10.8 3h7.4A2.8 2.8 0 0 1 21 5.8v7.4a2.8 2.8 0 0 1-2.8 2.8H17v1.2a2.8 2.8 0 0 1-2.8 2.8H6.8A2.8 2.8 0 0 1 4 17.2V9.8A2.8 2.8 0 0 1 6.8 7H8Zm2 0h4.2A2.8 2.8 0 0 1 17 9.8V14h1.2a.8.8 0 0 0 .8-.8V5.8a.8.8 0 0 0-.8-.8h-7.4a.8.8 0 0 0-.8.8V7Zm-3.2 2a.8.8 0 0 0-.8.8v7.4a.8.8 0 0 0 .8.8h7.4a.8.8 0 0 0 .8-.8V9.8a.8.8 0 0 0-.8-.8H6.8Z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                    <p>{account.name}</p>
+                  </article>
+                ))}
+
+                <article className="wedding-gift-card wedding-gift-address">
+                  <div className="wedding-gift-package" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="m12 2.5 8.5 4.25v10.5L12 21.5l-8.5-4.25V6.75L12 2.5Zm0 2.24L6.1 7.69 12 10.64l5.9-2.95L12 4.74Zm-6.5 4.57v6.7l5.5 2.75v-6.7L5.5 9.31Zm7.5 9.45 5.5-2.75v-6.7L13 12.06v6.7Z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Nama Penerima</h3>
+                    <p>Alamat lengkap disertai dengan kode pos</p>
+                  </div>
+                </article>
+
+                <aside className="wedding-gift-note">
+                  <strong>&#9432; Perhatian</strong>
+                  <p>
+                    Pastikan nama dan nomor rekening sudah sesuai dengan nama
+                    mempelai ketika melakukan proses transfer.
+                  </p>
+                  <p>
+                    Mohon melakukan konfirmasi hadiah dengan mengirim bukti
+                    transfer atau resi pengiriman melalui pesan pribadi.
+                  </p>
+                </aside>
               </div>
             </div>
           </section>
