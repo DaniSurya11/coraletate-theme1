@@ -562,7 +562,7 @@ export default function Invitation() {
           <section className="profile-section" id="profil" aria-labelledby="profile-title">
             <img
               className="profile-transition"
-              src="/assets/section-assets/profile-top-transition-white.png?v=edge-crop"
+              src="/assets/section-assets/profile-top-transition-matched.png"
               alt=""
             />
 
@@ -620,7 +620,7 @@ export default function Invitation() {
 
             <img
               className="profile-bottom-transition"
-              src="/assets/section-assets/profile-bottom-transition.png?v=edge-crop"
+              src="/assets/section-assets/profile-bottom-transition-matched.png"
               alt=""
             />
           </section>
