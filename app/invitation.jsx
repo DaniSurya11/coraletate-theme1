@@ -132,7 +132,6 @@ function LiquidGlassNavbar({ activeItem, onNavigate }) {
                   {item.icon}
                 </svg>
               </span>
-              <span className="liquid-nav-label">{item.label}</span>
             </button>
           );
         })}
@@ -205,6 +204,7 @@ export default function Invitation() {
   const giftDetailsRef = useRef(null);
   const loveStoryCarouselRef = useRef(null);
   const loveStoryTrackRef = useRef(null);
+  const navScrollAnimationRef = useRef(null);
 
   useEffect(() => {
     const guest = new URLSearchParams(window.location.search).get("to")?.trim();
@@ -566,7 +566,45 @@ export default function Invitation() {
     }
 
     setActiveNavItem(sectionId);
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    if (navScrollAnimationRef.current) {
+      window.cancelAnimationFrame(navScrollAnimationRef.current);
+      navScrollAnimationRef.current = null;
+    }
+
+    const startPosition = window.scrollY;
+    const targetPosition = section.getBoundingClientRect().top + startPosition;
+    const distance = targetPosition - startPosition;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      window.scrollTo({ top: targetPosition, behavior: "auto" });
+      return;
+    }
+
+    const duration = Math.min(2600, Math.max(1400, Math.abs(distance) * 0.24));
+    const startTime = performance.now();
+    const easeInOutSine = (progress) =>
+      -(Math.cos(Math.PI * progress) - 1) / 2;
+
+    const animateScroll = (currentTime) => {
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+
+      window.scrollTo({
+        top: startPosition + distance * easeInOutSine(progress),
+        behavior: "auto",
+      });
+
+      if (progress < 1) {
+        navScrollAnimationRef.current = window.requestAnimationFrame(animateScroll);
+      } else {
+        navScrollAnimationRef.current = null;
+      }
+    };
+
+    navScrollAnimationRef.current = window.requestAnimationFrame(animateScroll);
   };
 
   const submitWish = (event) => {

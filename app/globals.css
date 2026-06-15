@@ -2249,7 +2249,7 @@ button {
   right: 50%;
   bottom: max(9px, env(safe-area-inset-bottom));
   width: min(calc(100% - 34px), 446px);
-  padding: 4px 6px;
+  padding: 5px 8px;
   overflow: hidden;
   border: 1px solid rgba(248, 242, 231, .46);
   border-radius: 21px;
@@ -2296,14 +2296,14 @@ button {
   z-index: 2;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  align-items: end;
+  align-items: center;
 }
 
 .liquid-nav-item {
   position: relative;
   display: flex;
   min-width: 0;
-  height: 43px;
+  height: 48px;
   padding: 1px;
   align-items: center;
   border: 0;
@@ -2318,8 +2318,8 @@ button {
 .liquid-nav-icon {
   position: relative;
   display: grid;
-  width: 28px;
-  height: 28px;
+  width: 41px;
+  height: 41px;
   place-items: center;
   border: 1px solid transparent;
   border-radius: 50%;
@@ -2332,26 +2332,13 @@ button {
 }
 
 .liquid-nav-icon svg {
-  width: 17px;
-  height: 17px;
+  width: 25px;
+  height: 25px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.65;
-}
-
-.liquid-nav-label {
-  overflow: hidden;
-  max-width: 100%;
-  margin-top: 1px;
-  font-size: 8px;
-  font-weight: 500;
-  letter-spacing: .035em;
-  line-height: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  transition: color .32s ease, opacity .32s ease;
 }
 
 .liquid-nav-item.is-active {
@@ -2367,10 +2354,6 @@ button {
     inset 0 1px 0 rgba(255, 255, 255, .56),
     0 5px 13px rgba(80, 61, 24, .25);
   transform: translateY(-2px);
-}
-
-.liquid-nav-item.is-active .liquid-nav-label {
-  color: #fffaf0;
 }
 
 .liquid-nav-item:focus-visible {
@@ -2592,8 +2575,9 @@ body.invitation-open .invitation {
     padding-left: 4px;
   }
 
-  .liquid-nav-label {
-    font-size: 7px;
+  .liquid-nav-icon {
+    width: 39px;
+    height: 39px;
   }
 }
 
