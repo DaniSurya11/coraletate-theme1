@@ -2254,21 +2254,21 @@ button {
   right: 50%;
   bottom: max(9px, env(safe-area-inset-bottom));
   width: min(calc(100% - 34px), 446px);
-  padding: 5px 8px;
+  padding: 3px 8px 4px;
   overflow: hidden;
-  border: 1px solid rgba(248, 242, 231, .46);
-  border-radius: 21px;
+  border: 1px solid rgba(255, 255, 255, .52);
+  border-radius: 999px;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, .2), transparent 42%),
-    rgba(74, 99, 119, .67);
+    linear-gradient(145deg, rgba(255, 255, 255, .3), transparent 44%),
+    rgba(255, 255, 255, .15);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .5),
-    inset 0 -1px 0 rgba(44, 63, 77, .18),
-    0 12px 30px rgba(38, 55, 68, .24);
+    inset 0 1px 0 rgba(255, 255, 255, .7),
+    inset 0 -1px 0 rgba(255, 255, 255, .16),
+    0 8px 24px rgba(38, 55, 68, .16);
   transform: translateX(50%);
   animation: liquid-nav-arrival .6s .15s cubic-bezier(.2, .72, .22, 1) both;
-  backdrop-filter: blur(20px) saturate(155%);
-  -webkit-backdrop-filter: blur(20px) saturate(155%);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
 }
 
 .liquid-nav::before {
@@ -2277,9 +2277,9 @@ button {
   top: 1px;
   right: 8%;
   left: 8%;
-  height: 40%;
+  height: 38%;
   border-radius: 999px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, .28), transparent);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .45), transparent);
   content: "";
   pointer-events: none;
 }
@@ -2291,7 +2291,7 @@ button {
   width: 110px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(196, 166, 103, .25);
+  background: rgba(196, 166, 103, .14);
   filter: blur(18px);
   pointer-events: none;
 }
@@ -2308,12 +2308,12 @@ button {
   position: relative;
   display: flex;
   min-width: 0;
-  height: 48px;
-  padding: 1px;
+  height: 43px;
+  padding: 1px 1px 2px;
   align-items: center;
   border: 0;
   background: transparent;
-  color: rgba(248, 242, 231, .78);
+  color: rgba(51, 60, 67, .76);
   cursor: pointer;
   flex-direction: column;
   justify-content: center;
@@ -2323,8 +2323,8 @@ button {
 .liquid-nav-icon {
   position: relative;
   display: grid;
-  width: 41px;
-  height: 41px;
+  width: 34px;
+  height: 34px;
   place-items: center;
   border: 1px solid transparent;
   border-radius: 50%;
@@ -2337,8 +2337,8 @@ button {
 }
 
 .liquid-nav-icon svg {
-  width: 25px;
-  height: 25px;
+  width: 23px;
+  height: 23px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -2347,18 +2347,36 @@ button {
 }
 
 .liquid-nav-item.is-active {
-  color: var(--ivory);
+  color: var(--gold);
 }
 
 .liquid-nav-item.is-active .liquid-nav-icon {
-  border-color: rgba(255, 250, 238, .38);
+  border-color: rgba(167, 133, 62, .48);
   background:
-    radial-gradient(circle at 32% 18%, rgba(255, 255, 255, .55), transparent 38%),
-    rgba(167, 133, 62, .76);
+    radial-gradient(circle at 32% 18%, rgba(255, 255, 255, .7), transparent 40%),
+    rgba(255, 255, 255, .18);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .56),
-    0 5px 13px rgba(80, 61, 24, .25);
-  transform: translateY(-2px);
+    inset 0 1px 0 rgba(255, 255, 255, .7),
+    0 3px 9px rgba(80, 61, 24, .12);
+  transform: translateY(-1px);
+}
+
+.liquid-nav-dot {
+  width: 5px;
+  height: 5px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: rgba(64, 70, 74, .22);
+  transition:
+    background-color .32s ease,
+    box-shadow .32s ease,
+    transform .32s cubic-bezier(.2, .72, .22, 1);
+}
+
+.liquid-nav-item.is-active .liquid-nav-dot {
+  background: var(--gold);
+  box-shadow: 0 1px 4px rgba(167, 133, 62, .36);
+  transform: scale(1.12);
 }
 
 .liquid-nav-item:focus-visible {
@@ -2581,8 +2599,8 @@ body.invitation-open .invitation {
   }
 
   .liquid-nav-icon {
-    width: 39px;
-    height: 39px;
+    width: 33px;
+    height: 33px;
   }
 }
 

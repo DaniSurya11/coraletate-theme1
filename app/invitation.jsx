@@ -132,6 +132,7 @@ function LiquidGlassNavbar({ activeItem, onNavigate }) {
                   {item.icon}
                 </svg>
               </span>
+              <span className="liquid-nav-dot" aria-hidden="true" />
             </button>
           );
         })}
