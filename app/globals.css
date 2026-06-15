@@ -108,7 +108,6 @@ button {
   user-select: none;
   opacity: 0;
   will-change: transform, opacity;
-  filter: saturate(.82) contrast(.96);
 }
 
 .floral-top-left {
@@ -725,6 +724,9 @@ button {
   inset: 0;
   width: 100%;
   height: 100%;
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
   pointer-events: none;
 }
 
@@ -919,6 +921,9 @@ button {
   display: block;
   width: 100%;
   height: 100%;
+  opacity: 1;
+  filter: none;
+  mix-blend-mode: normal;
   pointer-events: none;
 }
 
@@ -1310,10 +1315,10 @@ button {
   display: block;
   width: 62%;
   height: auto;
-  opacity: .92;
   pointer-events: none;
   user-select: none;
-  mix-blend-mode: multiply;
+  filter: none;
+  mix-blend-mode: normal;
   opacity: 0;
   transform: translate3d(-58px, 0, 0) scale(.96);
   transform-origin: top left;
@@ -1324,7 +1329,7 @@ button {
 }
 
 .gallery-left-ornament.is-visible {
-  opacity: .92;
+  opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   will-change: auto;
 }
@@ -2467,12 +2472,12 @@ body.invitation-open .invitation {
 
 @keyframes bloom-top-left {
   from { opacity: 0; transform: translate(-22%, -18%) rotate(-4deg) scale(.76); }
-  to { opacity: .88; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
 }
 
 @keyframes bloom-top-right {
   from { opacity: 0; transform: translate(24%, -14%) rotate(5deg) scale(.78); }
-  to { opacity: .86; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
 }
 
 @keyframes vine-arrival {
@@ -2482,12 +2487,12 @@ body.invitation-open .invitation {
 
 @keyframes bloom-bottom-left {
   from { opacity: 0; transform: translate(-20%, 24%) rotate(5deg) scale(.78); }
-  to { opacity: .97; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
 }
 
 @keyframes bloom-bottom-right {
   from { opacity: 0; transform: translate(22%, 25%) rotate(-5deg) scale(.78); }
-  to { opacity: .97; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
 }
 
 @keyframes content-arrival {
