@@ -113,6 +113,7 @@ function SaveDateCountdown() {
 
 export default function Invitation() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAyatIntroReady, setIsAyatIntroReady] = useState(false);
   const [guestName, setGuestName] = useState("Nama Tamu");
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(null);
   const [isGiftOpen, setIsGiftOpen] = useState(false);
@@ -174,6 +175,19 @@ export default function Invitation() {
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsAyatIntroReady(false);
+      return undefined;
+    }
+
+    const ayatIntroTimer = window.setTimeout(() => {
+      setIsAyatIntroReady(true);
+    }, 600);
+
+    return () => window.clearTimeout(ayatIntroTimer);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -507,8 +521,12 @@ export default function Invitation() {
         </section>
 
         <div className="inner-page" id="innerPage">
-          <section className="ayat-section" id="ayatsuci" aria-label="Kutipan ayat suci">
-            <div className="editorial-photo-stack section-reveal">
+          <section
+            className={`ayat-section ${isAyatIntroReady ? "is-cinematic-visible" : ""}`}
+            id="ayatsuci"
+            aria-label="Kutipan ayat suci"
+          >
+            <div className="editorial-photo-stack ayat-cinematic-photo">
               <img
                 className="editorial-photo-arch"
                 src="/assets/section-assets/ayat-top-arch.png"
@@ -523,7 +541,7 @@ export default function Invitation() {
               </figure>
             </div>
 
-            <div className="quote-panel section-reveal">
+            <div className="quote-panel ayat-cinematic-quote">
               <blockquote>
                 &quot;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan
                 untukmu pasangan hidup dari jenismu sendiri, supaya kamu merasa
