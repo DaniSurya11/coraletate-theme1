@@ -62,6 +62,85 @@ const initialWishes = [
   },
 ];
 
+const liquidNavItems = [
+  {
+    id: "ayatsuci",
+    label: "Beranda",
+    icon: <path d="M4 10.8 12 4l8 6.8v8.7a.5.5 0 0 1-.5.5H15v-5.5h-6V20H4.5a.5.5 0 0 1-.5-.5v-8.7Z" />,
+  },
+  {
+    id: "profil",
+    label: "Profil",
+    icon: (
+      <>
+        <circle cx="12" cy="8" r="3.25" />
+        <path d="M5.8 20c.45-4 2.52-6 6.2-6s5.75 2 6.2 6" />
+      </>
+    ),
+  },
+  {
+    id: "event",
+    label: "Acara",
+    icon: (
+      <>
+        <rect x="4" y="6" width="16" height="14" rx="2.5" />
+        <path d="M8 3.8V8m8-4.2V8M4 10.5h16m-8 3v4m-2-2h4" />
+      </>
+    ),
+  },
+  {
+    id: "rsvp",
+    label: "RSVP",
+    icon: (
+      <>
+        <path d="M5 4.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-4.5 3v-3H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z" />
+        <path d="m7.5 10.8 2.7 2.7 6.2-6" />
+      </>
+    ),
+  },
+  {
+    id: "wedding-gift",
+    label: "Hadiah",
+    icon: (
+      <>
+        <path d="M4 10h16v10H4V10Zm-1-4h18v4H3V6Zm9 0v14" />
+        <path d="M12 6H8.7A2.2 2.2 0 1 1 12 3.1V6Zm0 0h3.3A2.2 2.2 0 1 0 12 3.1V6Z" />
+      </>
+    ),
+  },
+];
+
+function LiquidGlassNavbar({ activeItem, onNavigate }) {
+  return (
+    <nav className="liquid-nav" aria-label="Navigasi undangan">
+      <div className="liquid-nav-glow" aria-hidden="true" />
+      <div className="liquid-nav-list">
+        {liquidNavItems.map((item) => {
+          const isActive = activeItem === item.id;
+
+          return (
+            <button
+              className={`liquid-nav-item ${isActive ? "is-active" : ""}`}
+              type="button"
+              key={item.id}
+              aria-label={`Menuju ${item.label}`}
+              aria-current={isActive ? "location" : undefined}
+              onClick={() => onNavigate(item.id)}
+            >
+              <span className="liquid-nav-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  {item.icon}
+                </svg>
+              </span>
+              <span className="liquid-nav-label">{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
 function SaveDateCountdown() {
   const [countdown, setCountdown] = useState({
     days: "00",
@@ -118,6 +197,7 @@ export default function Invitation() {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(null);
   const [isGiftOpen, setIsGiftOpen] = useState(false);
   const [copiedGiftNumber, setCopiedGiftNumber] = useState("");
+  const [activeNavItem, setActiveNavItem] = useState("ayatsuci");
   const [wishName, setWishName] = useState("");
   const [wishMessage, setWishMessage] = useState("");
   const [wishes, setWishes] = useState(initialWishes);
@@ -265,6 +345,47 @@ export default function Invitation() {
       revealObserver.disconnect();
       imageObserver.disconnect();
       loveStoryObserver.disconnect();
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const sections = liquidNavItems
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean);
+    let animationFrame;
+
+    const updateActiveItem = () => {
+      const readingLine = window.innerHeight * 0.72;
+      const activeSection = sections.reduce((active, section) => {
+        if (section.getBoundingClientRect().top <= readingLine) {
+          return section;
+        }
+
+        return active;
+      }, sections[0]);
+
+      if (activeSection) {
+        setActiveNavItem(activeSection.id);
+      }
+    };
+
+    const handleScroll = () => {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(updateActiveItem);
+    };
+
+    updateActiveItem();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
     };
   }, [isOpen]);
 
@@ -435,6 +556,17 @@ export default function Invitation() {
     } else {
       setCopiedGiftNumber("");
     }
+  };
+
+  const navigateToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+
+    if (!section) {
+      return;
+    }
+
+    setActiveNavItem(sectionId);
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const submitWish = (event) => {
@@ -1045,6 +1177,13 @@ export default function Invitation() {
           </section>
         </div>
       </main>
+
+      {isOpen && activeGalleryIndex === null && (
+        <LiquidGlassNavbar
+          activeItem={activeNavItem}
+          onNavigate={navigateToSection}
+        />
+      )}
 
       {activeGalleryIndex !== null && (
         <div
