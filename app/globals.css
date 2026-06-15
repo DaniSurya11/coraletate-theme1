@@ -1314,6 +1314,19 @@ button {
   pointer-events: none;
   user-select: none;
   mix-blend-mode: multiply;
+  opacity: 0;
+  transform: translate3d(-58px, 0, 0) scale(.96);
+  transform-origin: top left;
+  transition:
+    opacity 1.8s ease-out,
+    transform 2.4s cubic-bezier(.16, .72, .18, 1);
+  will-change: opacity, transform;
+}
+
+.gallery-left-ornament.is-visible {
+  opacity: .92;
+  transform: translate3d(0, 0, 0) scale(1);
+  will-change: auto;
 }
 
 .gallery-inner {
@@ -1892,7 +1905,20 @@ button {
   background:
     url("/assets/section-assets/wishes-floral-symmetric-alisha-size.png") top center / 100% auto no-repeat;
   content: "";
+  opacity: 0;
   pointer-events: none;
+  transform: scale3d(1.16, 1, 1);
+  transform-origin: top center;
+  transition:
+    opacity 1.9s ease-out,
+    transform 2.5s cubic-bezier(.16, .72, .18, 1);
+  will-change: opacity, transform;
+}
+
+.wishes-section.is-visible::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  will-change: auto;
 }
 
 .wishes-heading {
@@ -2447,6 +2473,12 @@ body.invitation-open .invitation {
   .profile-intro.section-reveal,
   .profile-intro.section-reveal h2,
   .profile-intro.section-reveal > p:last-child {
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .gallery-left-ornament,
+  .wishes-section::before {
     transition-duration: .01ms !important;
     transition-delay: 0ms !important;
   }

@@ -149,7 +149,9 @@ export default function Invitation() {
   }, []);
 
   useEffect(() => {
-    const elements = invitationRef.current?.querySelectorAll(".section-reveal");
+    const elements = invitationRef.current?.querySelectorAll(
+      ".section-reveal, .ornament-reveal",
+    );
 
     if (!elements?.length) {
       return undefined;
@@ -764,7 +766,7 @@ export default function Invitation() {
 
           <section className="gallery-section" id="gallery" aria-labelledby="gallery-title">
             <img
-              className="gallery-left-ornament"
+              className="gallery-left-ornament ornament-reveal"
               src="/assets/section-assets/gallery-left-ornament.png"
               alt=""
             />
@@ -938,7 +940,7 @@ export default function Invitation() {
           </section>
 
           <section
-            className="wishes-section"
+            className="wishes-section ornament-reveal"
             id="wishes"
             aria-labelledby="wishes-title"
           >
