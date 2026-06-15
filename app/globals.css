@@ -106,8 +106,7 @@ button {
   height: auto;
   pointer-events: none;
   user-select: none;
-  opacity: 0;
-  will-change: transform, opacity;
+  opacity: 1;
 }
 
 .floral-top-left {
@@ -115,7 +114,7 @@ button {
   left: -14%;
   width: 72%;
   transform-origin: top left;
-  animation: bloom-top-left 1.4s .15s cubic-bezier(.2, .72, .22, 1) forwards;
+  animation: bloom-top-left 1.4s .15s cubic-bezier(.2, .72, .22, 1) backwards;
 }
 
 .floral-top-right {
@@ -123,15 +122,16 @@ button {
   right: -10%;
   width: 43%;
   transform-origin: top right;
-  animation: bloom-top-right 1.35s .55s cubic-bezier(.2, .72, .22, 1) forwards;
+  animation: bloom-top-right 1.35s .55s cubic-bezier(.2, .72, .22, 1) backwards;
 }
 
 .floral-vine {
   top: 30%;
   right: -5%;
   width: 28%;
+  opacity: .64;
   transform-origin: top right;
-  animation: vine-arrival 1.25s .9s ease-out forwards;
+  animation: vine-arrival 1.25s .9s ease-out backwards;
 }
 
 .floral-bottom-left {
@@ -139,7 +139,7 @@ button {
   left: -22%;
   width: 82%;
   transform-origin: bottom left;
-  animation: bloom-bottom-left 1.45s .75s cubic-bezier(.16, .76, .22, 1) forwards;
+  animation: bloom-bottom-left 1.45s .75s cubic-bezier(.16, .76, .22, 1) backwards;
 }
 
 .floral-bottom-right {
@@ -147,7 +147,7 @@ button {
   bottom: -14%;
   width: 75%;
   transform-origin: bottom right;
-  animation: bloom-bottom-right 1.45s 1.05s cubic-bezier(.16, .76, .22, 1) forwards;
+  animation: bloom-bottom-right 1.45s 1.05s cubic-bezier(.16, .76, .22, 1) backwards;
 }
 
 .cover-content {
@@ -2257,7 +2257,7 @@ button {
   padding: 3px 8px 4px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .52);
-  border-radius: 999px;
+  border-radius: 22px;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, .3), transparent 44%),
     rgba(255, 255, 255, .15);
@@ -2351,7 +2351,9 @@ button {
 }
 
 .liquid-nav-item.is-active .liquid-nav-icon {
-  border-color: rgba(167, 133, 62, .48);
+  width: 29px;
+  height: 29px;
+  border-color: rgba(167, 133, 62, .5);
   background:
     radial-gradient(circle at 32% 18%, rgba(255, 255, 255, .7), transparent 40%),
     rgba(255, 255, 255, .18);
@@ -2490,27 +2492,27 @@ body.invitation-open .invitation {
 
 @keyframes bloom-top-left {
   from { opacity: 0; transform: translate(-22%, -18%) rotate(-4deg) scale(.76); }
-  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes bloom-top-right {
   from { opacity: 0; transform: translate(24%, -14%) rotate(5deg) scale(.78); }
-  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes vine-arrival {
   from { opacity: 0; transform: translateX(30%) rotate(8deg); }
-  to { opacity: .64; transform: translateX(0) rotate(0); }
+  to { opacity: .64; transform: none; }
 }
 
 @keyframes bloom-bottom-left {
   from { opacity: 0; transform: translate(-20%, 24%) rotate(5deg) scale(.78); }
-  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes bloom-bottom-right {
   from { opacity: 0; transform: translate(22%, 25%) rotate(-5deg) scale(.78); }
-  to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes content-arrival {
@@ -2601,6 +2603,11 @@ body.invitation-open .invitation {
   .liquid-nav-icon {
     width: 33px;
     height: 33px;
+  }
+
+  .liquid-nav-item.is-active .liquid-nav-icon {
+    width: 28px;
+    height: 28px;
   }
 }
 
