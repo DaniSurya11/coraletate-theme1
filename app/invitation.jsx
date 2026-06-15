@@ -111,10 +111,41 @@ const liquidNavItems = [
 ];
 
 function LiquidGlassNavbar({ activeItem, onNavigate }) {
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollEndTimerRef = useRef(null);
+  const activeIndex = Math.max(
+    liquidNavItems.findIndex((item) => item.id === activeItem),
+    0,
+  );
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      window.clearTimeout(scrollEndTimerRef.current);
+      scrollEndTimerRef.current = window.setTimeout(() => {
+        setIsScrolling(false);
+      }, 140);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.clearTimeout(scrollEndTimerRef.current);
+    };
+  }, []);
+
   return (
-    <nav className="liquid-nav" aria-label="Navigasi undangan">
+    <nav
+      className={`liquid-nav ${isScrolling ? "is-scrolling" : ""}`}
+      aria-label="Navigasi undangan"
+    >
       <div className="liquid-nav-glow" aria-hidden="true" />
-      <div className="liquid-nav-list">
+      <div
+        className="liquid-nav-list"
+        style={{ "--liquid-nav-active-index": activeIndex }}
+      >
+        <span className="liquid-nav-active-indicator" aria-hidden="true" />
         {liquidNavItems.map((item) => {
           const isActive = activeItem === item.id;
 
