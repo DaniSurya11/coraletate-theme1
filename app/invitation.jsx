@@ -555,7 +555,7 @@ export default function Invitation() {
     window.setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "auto" });
       window.dispatchEvent(new CustomEvent("invitation:opened"));
-    }, 850);
+    }, 1100);
   };
 
   const copyGiftNumber = async (number) => {
@@ -754,7 +754,7 @@ export default function Invitation() {
               <p>QS. Ar-Rum: 21</p>
             </div>
 
-            <div className="ayat-divider-panel section-reveal" aria-hidden="true">
+            <div className="ayat-divider-panel ayat-cinematic-divider" aria-hidden="true">
               <img
                 className="ayat-divider"
                 src="/assets/section-assets/ayat-divider.png"
