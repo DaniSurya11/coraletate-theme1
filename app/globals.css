@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 @font-face {
   font-family: "Calabassas";
@@ -405,6 +405,7 @@ button {
   font-size: 42px;
   font-weight: 400;
   line-height: 1;
+  text-shadow: none !important;
 }
 
 .editorial-photo-stack {
@@ -469,7 +470,7 @@ button {
 
 .quote-panel blockquote {
   width: 82%;
-  margin: 0;
+  margin: clamp(16px, 4.5vw, 24px) 0 0;
   color: #657581;
   font-family: "Roboto", Arial, sans-serif;
   font-size: clamp(14px, 3.85vw, 15px);
