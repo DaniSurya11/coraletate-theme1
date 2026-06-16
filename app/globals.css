@@ -376,8 +376,8 @@ button {
   pointer-events: none;
   transform: translateY(24px);
   transition:
-    opacity 1.05s .4s ease,
-    transform 1.1s .4s cubic-bezier(.2, .72, .22, 1),
+    opacity 1.22s .34s ease,
+    transform 1.32s .34s cubic-bezier(.16, .76, .22, 1),
     visibility 0s .4s;
 }
 
@@ -596,12 +596,13 @@ button {
 
 .profile-transition {
   position: relative;
-  z-index: 2;
+  z-index: 0;
   display: block;
   width: 100%;
   max-width: none;
   height: auto;
   margin: clamp(-12px, -2vw, -8px) 0 -56px;
+  pointer-events: none;
 }
 
 .profile-surface {
@@ -882,6 +883,18 @@ button {
   object-position: center;
   filter: saturate(.78) contrast(.92) brightness(.82);
   transform: scale(1.03);
+  transition: transform 2s cubic-bezier(.16, .76, .22, 1);
+}
+
+.save-date-portrait.section-reveal {
+  transform: translateY(46px) scale(.965);
+  transition:
+    opacity 1.15s ease,
+    transform 1.45s cubic-bezier(.16, .76, .22, 1);
+}
+
+.save-date-portrait.section-reveal.is-visible .save-date-photo {
+  transform: scale(1);
 }
 
 .save-date-photo-window::after {
@@ -950,6 +963,13 @@ button {
   padding: 0 18px;
 }
 
+.save-date-countdown.section-reveal {
+  transform: translateY(20px);
+  transition:
+    opacity .95s .18s ease,
+    transform 1.08s .12s cubic-bezier(.16, .76, .22, 1);
+}
+
 .save-date-countdown h2 {
   margin: 0 auto clamp(12px, 3.5vw, 16px);
   color: var(--gold-dark);
@@ -979,7 +999,22 @@ button {
   border: 2px solid rgba(255, 255, 255, .94);
   border-radius: 20px;
   background: rgba(247, 247, 247, .82);
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity .65s ease,
+    transform .78s cubic-bezier(.16, .76, .22, 1);
 }
+
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(1) { transition-delay: .12s; }
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(2) { transition-delay: .2s; }
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(3) { transition-delay: .28s; }
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(4) { transition-delay: .36s; }
 
 .save-date-countdown-item strong {
   margin-top: -4px;
@@ -1555,6 +1590,17 @@ button {
   white-space: nowrap;
 }
 
+.love-story-inner > h2.section-reveal {
+  transform: translateY(24px);
+  transition:
+    opacity .9s ease,
+    transform 1.08s cubic-bezier(.16, .76, .22, 1);
+}
+
+.love-story-inner > h2.section-reveal.is-visible {
+  transform: translateY(0);
+}
+
 .love-story-carousel {
   width: 100%;
   overflow: hidden;
@@ -1619,6 +1665,17 @@ button {
   text-align: center;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+}
+
+.love-story-card.section-reveal {
+  transform: translateY(28px) scale(.975);
+  transition:
+    opacity .9s ease,
+    transform 1.08s cubic-bezier(.16, .76, .22, 1);
+}
+
+.love-story-cards .love-story-card.section-reveal:nth-child(2) {
+  transition-delay: .14s;
 }
 
 .love-story-card h3 {
@@ -2169,12 +2226,21 @@ button {
   width: 100%;
 }
 
+.closing-visual.section-reveal {
+  transform: translateY(48px) scale(.955);
+  transition:
+    opacity 1.15s ease,
+    transform 1.55s cubic-bezier(.16, .76, .22, 1);
+}
+
 .closing-frame-wrap {
   position: relative;
   width: min(77%, 350px);
   aspect-ratio: 900 / 1120;
   margin: 0 auto;
   overflow: hidden;
+  transform: scale(.985);
+  transition: transform 1.9s .12s cubic-bezier(.16, .76, .22, 1);
 }
 
 .closing-photo-window {
@@ -2229,6 +2295,20 @@ button {
   font-size: clamp(68px, 18vw, 91px);
   font-weight: 400;
   line-height: 1;
+  opacity: 0;
+  transform: translateY(24px) scale(.94);
+  transition:
+    opacity .95s .48s ease,
+    transform 1.1s .42s cubic-bezier(.16, .76, .22, 1);
+}
+
+.closing-visual.section-reveal.is-visible .closing-frame-wrap {
+  transform: scale(1);
+}
+
+.closing-visual.section-reveal.is-visible h2 {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .closing-message {
@@ -2242,6 +2322,30 @@ button {
   flex-direction: column;
   gap: 10px;
 }
+
+.closing-message.section-reveal {
+  transform: translateY(24px);
+  transition:
+    opacity .95s .18s ease,
+    transform 1.05s .12s cubic-bezier(.16, .76, .22, 1);
+}
+
+.closing-message.section-reveal p {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity .72s ease,
+    transform .86s cubic-bezier(.16, .76, .22, 1);
+}
+
+.closing-message.section-reveal.is-visible p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.closing-message.section-reveal.is-visible p:nth-child(1) { transition-delay: .24s; }
+.closing-message.section-reveal.is-visible p:nth-child(2) { transition-delay: .38s; }
+.closing-message.section-reveal.is-visible p:nth-child(3) { transition-delay: .52s; }
 
 .closing-message p {
   width: min(100%, 370px);
@@ -2467,16 +2571,17 @@ button {
 }
 
 .invitation.is-open .cover-content {
-  animation: cover-open 1.15s linear forwards;
+  animation: cover-open 1.22s cubic-bezier(.16, .76, .22, 1) forwards;
   pointer-events: none;
   visibility: hidden;
-  transition: visibility 0s 1.15s;
+  transition: visibility 0s 1.22s;
 }
 
 .invitation.is-open .background {
   animation: none;
   opacity: 0;
   transform: scale(1.05);
+  transition-duration: 1.18s;
 }
 
 .invitation.is-open .light-wash {
@@ -2587,8 +2692,9 @@ body.invitation-open .invitation {
 
 @keyframes cover-open {
   0% { opacity: 1; transform: none; }
-  62% { opacity: .58; transform: translateY(-10px) scale(.994); }
-  100% { opacity: 0; transform: translateY(-26px) scale(.98); }
+  46% { opacity: .9; transform: translateY(-4px) scale(.998); }
+  78% { opacity: .42; transform: translateY(-18px) scale(.988); }
+  100% { opacity: 0; transform: translateY(-34px) scale(.976); }
 }
 
 @keyframes gallery-lightbox-arrival {
@@ -2701,6 +2807,21 @@ body.invitation-open .invitation {
   .profile-intro.section-reveal,
   .profile-intro.section-reveal h2,
   .profile-intro.section-reveal > p:last-child {
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .save-date-portrait.section-reveal,
+  .save-date-photo,
+  .save-date-countdown.section-reveal,
+  .save-date-countdown-item,
+  .love-story-inner > h2.section-reveal,
+  .love-story-card.section-reveal,
+  .closing-visual.section-reveal,
+  .closing-frame-wrap,
+  .closing-visual h2,
+  .closing-message.section-reveal,
+  .closing-message.section-reveal p {
     transition-duration: .01ms !important;
     transition-delay: 0ms !important;
   }

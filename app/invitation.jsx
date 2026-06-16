@@ -1005,7 +1005,7 @@ export default function Invitation() {
             aria-labelledby="love-story-title"
           >
             <div className="love-story-inner">
-              <h2 id="love-story-title">Kisah Cinta</h2>
+              <h2 className="section-reveal" id="love-story-title">Kisah Cinta</h2>
 
               <div
                 className="love-story-carousel love-story-carousel-reveal"
@@ -1037,7 +1037,7 @@ export default function Invitation() {
               </div>
 
               <div className="love-story-cards">
-                <article className="love-story-card">
+                <article className="love-story-card section-reveal">
                   <h3>Awal pertemuan</h3>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
@@ -1045,7 +1045,7 @@ export default function Invitation() {
                   </p>
                 </article>
 
-                <article className="love-story-card">
+                <article className="love-story-card section-reveal">
                   <h3>Menjalin Hubungan</h3>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
