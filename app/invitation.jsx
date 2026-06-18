@@ -32,6 +32,10 @@ const loveStoryPhotos = [
   "isai-jane-w2-150x150.jpg",
 ];
 
+const weddingMusicSrc = "/assets/coralestate-musci1.mp3";
+const weddingMusicStartTime = 25;
+const weddingMusicFadeDuration = 1500;
+
 const coverFlorals = {
   topLeft: { file: "floral-top-left", width: 507, height: 662 },
   topRight: { file: "floral-top-right", width: 328, height: 579 },
@@ -208,6 +212,32 @@ function LiquidGlassNavbar({ activeItem, onNavigate }) {
   );
 }
 
+function GlassMusicButton({ isPlaying, onToggleMusic }) {
+  return (
+    <button
+      className={`glass-music-button ${isPlaying ? "is-playing" : ""}`}
+      type="button"
+      aria-label={isPlaying ? "Matikan musik" : "Nyalakan musik"}
+      aria-pressed={isPlaying}
+      onClick={onToggleMusic}
+    >
+      <span className="glass-music-button-glow" aria-hidden="true" />
+      <span className="glass-music-button-icon" aria-hidden="true">
+        {isPlaying ? (
+          <svg viewBox="0 0 24 24">
+            <rect x="7" y="6" width="3.5" height="12" rx="1.2" />
+            <rect x="13.5" y="6" width="3.5" height="12" rx="1.2" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24">
+            <path d="M9 18.2a2.4 2.4 0 1 1-1.8-2.32V6.4l9.4-1.9v9.8a2.4 2.4 0 1 1-1.8-2.32V8.2L9 9.38v8.82Z" />
+          </svg>
+        )}
+      </span>
+    </button>
+  );
+}
+
 function SaveDateCountdown() {
   const [countdown, setCountdown] = useState({
     days: "00",
@@ -268,10 +298,13 @@ export default function Invitation() {
   const [wishName, setWishName] = useState("");
   const [wishMessage, setWishMessage] = useState("");
   const [wishes, setWishes] = useState(initialWishes);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const invitationRef = useRef(null);
   const giftDetailsRef = useRef(null);
   const loveStoryCarouselRef = useRef(null);
   const loveStoryTrackRef = useRef(null);
+  const musicAudioRef = useRef(null);
+  const musicFadeAnimationRef = useRef(null);
   const navScrollAnimationRef = useRef(null);
 
   useEffect(() => {
@@ -293,6 +326,128 @@ export default function Invitation() {
     return () => {
       document.documentElement.classList.remove("invitation-open");
       document.body.classList.remove("invitation-open");
+    };
+  }, []);
+
+  const stopMusicFade = () => {
+    if (musicFadeAnimationRef.current) {
+      window.cancelAnimationFrame(musicFadeAnimationRef.current);
+      musicFadeAnimationRef.current = null;
+    }
+  };
+
+  const fadeMusicIn = () => {
+    const audio = musicAudioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    stopMusicFade();
+
+    const startTime = performance.now();
+
+    const animateFade = (currentTime) => {
+      const progress = Math.min(
+        (currentTime - startTime) / weddingMusicFadeDuration,
+        1,
+      );
+
+      audio.volume = progress;
+
+      if (progress < 1 && !audio.paused) {
+        musicFadeAnimationRef.current = window.requestAnimationFrame(animateFade);
+      } else {
+        audio.volume = audio.paused ? audio.volume : 1;
+        musicFadeAnimationRef.current = null;
+      }
+    };
+
+    musicFadeAnimationRef.current = window.requestAnimationFrame(animateFade);
+  };
+
+  const playWeddingMusic = async ({ fadeIn = false, restart = false } = {}) => {
+    const audio = musicAudioRef.current;
+
+    if (!audio) {
+      return false;
+    }
+
+    stopMusicFade();
+
+    try {
+      if (restart || audio.currentTime < weddingMusicStartTime) {
+        audio.currentTime = weddingMusicStartTime;
+      }
+
+      audio.volume = fadeIn ? 0 : 1;
+      await audio.play();
+
+      if (fadeIn) {
+        fadeMusicIn();
+      }
+
+      return true;
+    } catch {
+      stopMusicFade();
+      setIsMusicPlaying(false);
+      return false;
+    }
+  };
+
+  const toggleWeddingMusic = async () => {
+    const audio = musicAudioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    if (audio.paused) {
+      await playWeddingMusic();
+      return;
+    }
+
+    stopMusicFade();
+    audio.pause();
+  };
+
+  useEffect(() => {
+    const audio = musicAudioRef.current;
+
+    if (!audio) {
+      return undefined;
+    }
+
+    const handleLoadedMetadata = () => {
+      if (audio.currentTime < weddingMusicStartTime) {
+        audio.currentTime = weddingMusicStartTime;
+      }
+    };
+    const handleEnded = () => {
+      audio.currentTime = weddingMusicStartTime;
+      audio.volume = 1;
+      audio.play().catch(() => setIsMusicPlaying(false));
+    };
+    const handlePause = () => setIsMusicPlaying(false);
+    const handlePlay = () => setIsMusicPlaying(true);
+    const handleError = () => {
+      stopMusicFade();
+      setIsMusicPlaying(false);
+    };
+
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("error", handleError);
+
+    return () => {
+      stopMusicFade();
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("error", handleError);
     };
   }, []);
 
@@ -684,6 +839,8 @@ export default function Invitation() {
       return;
     }
 
+    void playWeddingMusic({ fadeIn: true, restart: true });
+
     setIsOpen(true);
     document.documentElement.classList.add("invitation-open");
     document.body.classList.add("invitation-open");
@@ -800,6 +957,7 @@ export default function Invitation() {
 
   return (
     <>
+      <audio ref={musicAudioRef} src={weddingMusicSrc} preload="metadata" />
       <div className="inner-fixed-background pointer-events-none" aria-hidden="true" />
 
       <main
@@ -1480,10 +1638,16 @@ export default function Invitation() {
       </main>
 
       {isOpen && activeGalleryIndex === null && (
-        <LiquidGlassNavbar
-          activeItem={activeNavItem}
-          onNavigate={navigateToSection}
-        />
+        <>
+          <GlassMusicButton
+            isPlaying={isMusicPlaying}
+            onToggleMusic={toggleWeddingMusic}
+          />
+          <LiquidGlassNavbar
+            activeItem={activeNavItem}
+            onNavigate={navigateToSection}
+          />
+        </>
       )}
 
       {activeGalleryIndex !== null && (
