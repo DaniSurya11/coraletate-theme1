@@ -592,7 +592,7 @@ button {
 
 .profile-section {
   position: relative;
-  margin-top: 0;
+  margin-top: 34px;
   overflow: hidden;
 }
 
@@ -2780,10 +2780,6 @@ body.invitation-open .invitation {
 @media (min-width: 501px) {
   .invitation {
     box-shadow: 0 0 70px rgba(0, 0, 0, .35);
-  }
-
-  .profile-section {
-    margin-top: 34px;
   }
 
   .inner-fixed-background {
