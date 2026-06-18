@@ -269,6 +269,10 @@ export default function Invitation() {
       return undefined;
     }
 
+    const revealObserverOptions = window.matchMedia("(max-width: 767px)").matches
+      ? { rootMargin: "0px 0px -25% 0px", threshold: 0.01 }
+      : { rootMargin: "0px 0px -12% 0px", threshold: 0.12 };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -280,10 +284,7 @@ export default function Invitation() {
           observer.unobserve(entry.target);
         });
       },
-      {
-        rootMargin: "0px 0px -12% 0px",
-        threshold: 0.12,
-      },
+      revealObserverOptions,
     );
 
     elements.forEach((element) => observer.observe(element));
@@ -317,6 +318,10 @@ export default function Invitation() {
     if (!galleryReveal || !galleryImages?.length || !loveStoryReveal) {
       return undefined;
     }
+
+    const loveStoryRevealOptions = window.matchMedia("(max-width: 767px)").matches
+      ? { rootMargin: "0px 0px -25% 0px", threshold: 0.01 }
+      : { rootMargin: "0px", threshold: 0.01 };
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -363,10 +368,7 @@ export default function Invitation() {
           loveStoryObserver.unobserve(entry.target);
         });
       },
-      {
-        rootMargin: "0px",
-        threshold: 0.01,
-      },
+      loveStoryRevealOptions,
     );
 
     revealObserver.observe(galleryReveal);
