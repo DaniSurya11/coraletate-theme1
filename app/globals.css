@@ -66,6 +66,11 @@ button {
 .background {
   z-index: -4;
   background-image: url("/assets/coastal-bg.png");
+  background-image: image-set(
+    url("/assets/coastal-bg.avif") type("image/avif"),
+    url("/assets/coastal-bg.webp") type("image/webp"),
+    url("/assets/coastal-bg.png") type("image/png")
+  );
   background-position: center;
   background-size: cover;
   transform: scale(1.035);
@@ -93,6 +98,13 @@ button {
   margin: 0;
   background:
     url("/assets/inner-bg.png") 44% 50% / cover no-repeat,
+    var(--ivory);
+  background:
+    image-set(
+      url("/assets/inner-bg.avif") type("image/avif"),
+      url("/assets/inner-bg.webp") type("image/webp"),
+      url("/assets/inner-bg.png") type("image/png")
+    ) 44% 50% / cover no-repeat,
     var(--ivory);
   opacity: 0;
   pointer-events: none;
