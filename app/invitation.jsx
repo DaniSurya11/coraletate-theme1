@@ -270,7 +270,7 @@ export default function Invitation() {
     }
 
     const revealObserverOptions = window.matchMedia("(max-width: 767px)").matches
-      ? { rootMargin: "0px 0px -25% 0px", threshold: 0.01 }
+      ? { rootMargin: "0px 0px -32% 0px", threshold: 0.01 }
       : { rootMargin: "0px 0px -12% 0px", threshold: 0.12 };
 
     const observer = new IntersectionObserver(
@@ -320,7 +320,7 @@ export default function Invitation() {
     }
 
     const loveStoryRevealOptions = window.matchMedia("(max-width: 767px)").matches
-      ? { rootMargin: "0px 0px -25% 0px", threshold: 0.01 }
+      ? { rootMargin: "0px 0px -32% 0px", threshold: 0.01 }
       : { rootMargin: "0px", threshold: 0.01 };
 
     const revealObserver = new IntersectionObserver(
@@ -720,7 +720,7 @@ export default function Invitation() {
                 disabled={isOpen}
                 onClick={openInvitation}
               >
-                <span>Open Invitation</span>
+                <span>OPEN INVITATION</span>
               </button>
             </div>
           </div>

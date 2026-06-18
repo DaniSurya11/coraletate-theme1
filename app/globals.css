@@ -331,11 +331,12 @@ button {
   box-shadow: 0 6px 18px rgba(126, 96, 43, .14);
   color: #fff;
   cursor: pointer;
-  font-size: 12px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
   font-weight: 500;
   line-height: 16px;
   letter-spacing: 0;
-  text-transform: uppercase;
+  text-transform: none;
   transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
 }
 
@@ -503,9 +504,9 @@ button {
   margin: clamp(-28px, -6.2vw, -22px) auto 0;
   align-items: flex-end;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   background-image: url("/assets/section-assets/ayat-section-bg.webp");
-  background-position: center bottom;
+  background-position: center center;
   background-repeat: repeat-y;
   background-size: 100% auto;
 }
@@ -516,7 +517,8 @@ button {
   width: 112%;
   max-width: none;
   height: auto;
-  margin: 0 0 6px;
+  margin: 0 0 0;
+  transform: translateY(10px);
 }
 
 .ayat-cinematic-photo {
@@ -568,8 +570,8 @@ button {
   opacity: 0;
   transform: translate3d(0, 8px, 0);
   transition:
-    opacity .9s 1.08s ease,
-    transform 1s 1.02s cubic-bezier(.16, .76, .22, 1);
+    opacity 1.05s .32s ease,
+    transform 1.35s .24s cubic-bezier(.16, .76, .22, 1);
   will-change: opacity, transform;
 }
 
@@ -1002,8 +1004,8 @@ button {
   opacity: 0;
   transform: translateY(16px);
   transition:
-    opacity .65s ease,
-    transform .78s cubic-bezier(.16, .76, .22, 1);
+    opacity .95s ease,
+    transform 1.15s cubic-bezier(.16, .76, .22, 1);
 }
 
 .save-date-countdown.section-reveal.is-visible .save-date-countdown-item {
@@ -1011,10 +1013,10 @@ button {
   transform: translateY(0);
 }
 
-.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(1) { transition-delay: .12s; }
-.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(2) { transition-delay: .2s; }
-.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(3) { transition-delay: .28s; }
-.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(4) { transition-delay: .36s; }
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(1) { transition-delay: .16s; }
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(2) { transition-delay: .28s; }
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(3) { transition-delay: .4s; }
+.save-date-countdown.section-reveal.is-visible .save-date-countdown-item:nth-child(4) { transition-delay: .52s; }
 
 .save-date-countdown-item strong {
   margin-top: -4px;
@@ -1137,10 +1139,10 @@ button {
   background: var(--gold);
   box-shadow: 0 6px 18px rgba(126, 96, 43, .14);
   color: #fff;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 14px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
   text-decoration: none;
   text-transform: uppercase;
   transition: background .25s ease, box-shadow .25s ease, transform .25s ease;
@@ -1157,7 +1159,7 @@ button {
 .event-lower-ornament {
   z-index: 1;
   min-height: clamp(100px, 15dvh, 140px);
-  background: url("/assets/section-assets/event-lower-ornament.png") center top / 100% auto no-repeat;
+  background: url("/assets/section-assets/event-lower-ayat-divider.png") center top / 100% auto no-repeat;
 }
 
 .rsvp-section {
@@ -1332,10 +1334,10 @@ button {
   background: var(--rsvp-button);
   color: #fff;
   cursor: pointer;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: clamp(14px, 3.85vw, 15px);
-  font-weight: 400;
-  line-height: 1;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
   text-align: center;
   text-transform: uppercase;
   transition: background .3s ease, transform .3s ease;
@@ -1748,10 +1750,10 @@ button {
   box-shadow: 0 6px 18px rgba(126, 96, 43, .14);
   color: #fff;
   cursor: pointer;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
   text-transform: uppercase;
   transition: background .25s ease, box-shadow .25s ease, transform .2s ease;
 }
@@ -2107,10 +2109,10 @@ button {
   box-shadow: 0 6px 18px rgba(126, 96, 43, .14);
   color: #fff;
   cursor: pointer;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
   text-transform: uppercase;
   transition: background .25s ease, box-shadow .25s ease, transform .2s ease;
 }
@@ -2778,6 +2780,10 @@ body.invitation-open .invitation {
 @media (min-width: 501px) {
   .invitation {
     box-shadow: 0 0 70px rgba(0, 0, 0, .35);
+  }
+
+  .profile-section {
+    margin-top: 34px;
   }
 
   .inner-fixed-background {
