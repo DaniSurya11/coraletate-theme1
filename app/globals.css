@@ -1048,6 +1048,17 @@ button {
   text-align: center;
 }
 
+.event-section.section-reveal {
+  transform: translateY(22px);
+  transition:
+    opacity 1s ease,
+    transform 1.18s cubic-bezier(.16, .76, .22, 1);
+}
+
+.event-section.section-reveal.is-visible {
+  transform: translateY(0);
+}
+
 .event-top-ornament,
 .event-main-card,
 .event-lower-ornament {
@@ -1071,6 +1082,14 @@ button {
   flex-direction: column;
   justify-content: flex-start;
   background: url("/assets/section-assets/event-main-card.webp") center center / 100% auto repeat-y;
+}
+
+.event-section.section-reveal .event-detail.section-reveal {
+  transition-delay: .16s;
+}
+
+.event-section.section-reveal .event-detail-reception.section-reveal {
+  transition-delay: .3s;
 }
 
 .event-detail {
@@ -2794,7 +2813,15 @@ body.invitation-open .invitation {
   *::after {
     animation-duration: .01ms !important;
     animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+  }
+
+  .couple > span:not(.ampersand) {
+    background-image: linear-gradient(var(--gold), var(--gold));
+    background-position: 0 0;
+    background-size: 100% 100%;
+    animation: none !important;
   }
 
   .ayat-cinematic-photo,
@@ -2817,6 +2844,8 @@ body.invitation-open .invitation {
   .save-date-photo,
   .save-date-countdown.section-reveal,
   .save-date-countdown-item,
+  .event-section.section-reveal,
+  .event-section.section-reveal .event-detail.section-reveal,
   .love-story-inner > h2.section-reveal,
   .love-story-card.section-reveal,
   .closing-visual.section-reveal,

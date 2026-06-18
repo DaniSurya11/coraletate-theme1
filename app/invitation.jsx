@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const galleryPhotos = [
@@ -30,6 +31,18 @@ const loveStoryPhotos = [
   "isai-jane-w8-150x150.jpg",
   "isai-jane-w2-150x150.jpg",
 ];
+
+const getGalleryPhotoSize = (index) => {
+  if (index === 17) {
+    return { width: 1800, height: 1352 };
+  }
+
+  if (index >= 10) {
+    return { width: 1350, height: 1800 };
+  }
+
+  return { width: 1200, height: 1800 };
+};
 
 const weddingGiftAccounts = [
   { bank: "BANK1", number: "1111111111", name: "Nama Lengkap1" },
@@ -273,22 +286,69 @@ export default function Invitation() {
       ? { rootMargin: "0px 0px -32% 0px", threshold: 0.01 }
       : { rootMargin: "0px 0px -12% 0px", threshold: 0.12 };
 
-    const observer = new IntersectionObserver(
+    const pendingElements = new Set(elements);
+    let observer;
+    let lastScrollY = window.scrollY;
+    let fallbackFrame;
+
+    const revealElement = (element) => {
+      if (!pendingElements.has(element)) {
+        return;
+      }
+
+      element.classList.add("is-visible");
+      pendingElements.delete(element);
+      observer?.unobserve(element);
+    };
+
+    const revealFastPassedElements = () => {
+      fallbackFrame = undefined;
+
+      if (!document.body.classList.contains("invitation-open")) {
+        return;
+      }
+
+      pendingElements.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          revealElement(element);
+        }
+      });
+    };
+
+    const handleFallbackScroll = () => {
+      const scrollDelta = Math.abs(window.scrollY - lastScrollY);
+      lastScrollY = window.scrollY;
+
+      if (scrollDelta < window.innerHeight * 0.72 || fallbackFrame) {
+        return;
+      }
+
+      fallbackFrame = window.requestAnimationFrame(revealFastPassedElements);
+    };
+
+    observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
             return;
           }
 
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+          revealElement(entry.target);
         });
       },
       revealObserverOptions,
     );
 
     elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
+    window.addEventListener("scroll", handleFallbackScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleFallbackScroll);
+      window.cancelAnimationFrame(fallbackFrame);
+    };
   }, []);
 
   useEffect(() => {
@@ -322,16 +382,58 @@ export default function Invitation() {
     const loveStoryRevealOptions = window.matchMedia("(max-width: 767px)").matches
       ? { rootMargin: "0px 0px -32% 0px", threshold: 0.01 }
       : { rootMargin: "0px", threshold: 0.01 };
+    const fallbackTargets = new Set([galleryReveal, loveStoryReveal, ...galleryImages]);
+    let lastScrollY = window.scrollY;
+    let fallbackFrame;
 
-    const revealObserver = new IntersectionObserver(
+    const revealMediaTarget = (element) => {
+      if (!fallbackTargets.has(element)) {
+        return;
+      }
+
+      if (element.tagName === "IMG") {
+        element.classList.add("is-loaded");
+        imageObserver?.unobserve(element);
+      } else {
+        element.classList.add("is-visible");
+        revealObserver?.unobserve(element);
+        loveStoryObserver?.unobserve(element);
+      }
+
+      fallbackTargets.delete(element);
+    };
+
+    const revealFastPassedMedia = () => {
+      fallbackFrame = undefined;
+
+      fallbackTargets.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          revealMediaTarget(element);
+        }
+      });
+    };
+
+    const handleMediaFallbackScroll = () => {
+      const scrollDelta = Math.abs(window.scrollY - lastScrollY);
+      lastScrollY = window.scrollY;
+
+      if (scrollDelta < window.innerHeight * 0.72 || fallbackFrame) {
+        return;
+      }
+
+      fallbackFrame = window.requestAnimationFrame(revealFastPassedMedia);
+    };
+
+    let revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
             return;
           }
 
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
+          revealMediaTarget(entry.target);
         });
       },
       {
@@ -340,15 +442,14 @@ export default function Invitation() {
       },
     );
 
-    const imageObserver = new IntersectionObserver(
+    let imageObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
             return;
           }
 
-          entry.target.classList.add("is-loaded");
-          imageObserver.unobserve(entry.target);
+          revealMediaTarget(entry.target);
         });
       },
       {
@@ -357,15 +458,14 @@ export default function Invitation() {
       },
     );
 
-    const loveStoryObserver = new IntersectionObserver(
+    let loveStoryObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
             return;
           }
 
-          entry.target.classList.add("is-visible");
-          loveStoryObserver.unobserve(entry.target);
+          revealMediaTarget(entry.target);
         });
       },
       loveStoryRevealOptions,
@@ -374,11 +474,14 @@ export default function Invitation() {
     revealObserver.observe(galleryReveal);
     galleryImages.forEach((image) => imageObserver.observe(image));
     loveStoryObserver.observe(loveStoryReveal);
+    window.addEventListener("scroll", handleMediaFallbackScroll, { passive: true });
 
     return () => {
       revealObserver.disconnect();
       imageObserver.disconnect();
       loveStoryObserver.disconnect();
+      window.removeEventListener("scroll", handleMediaFallbackScroll);
+      window.cancelAnimationFrame(fallbackFrame);
     };
   }, [isOpen]);
 
@@ -483,6 +586,7 @@ export default function Invitation() {
       return undefined;
     }
 
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let slideIndex = loveStoryPhotos.length;
     let advanceTimer;
     let transitionTimer;
@@ -531,6 +635,13 @@ export default function Invitation() {
     };
 
     positionTrack(false);
+    if (reducedMotionQuery.matches) {
+      const resizeObserver = new ResizeObserver(() => positionTrack(false));
+      resizeObserver.observe(carousel);
+
+      return () => resizeObserver.disconnect();
+    }
+
     advanceTimer = window.setTimeout(advance, 500);
     track.addEventListener("transitionend", handleTransitionEnd);
 
@@ -766,10 +877,16 @@ export default function Invitation() {
           </section>
 
           <section className="profile-section" id="profil" aria-labelledby="profile-title">
-            <img
+            <Image
               className="profile-transition"
               src="/assets/section-assets/profile-top-transition-matched.png"
               alt=""
+              width={1080}
+              height={349}
+              quality={92}
+              sizes="(max-width: 500px) 100vw, 500px"
+              loading="lazy"
+              decoding="async"
             />
 
             <div className="profile-surface">
@@ -783,11 +900,27 @@ export default function Invitation() {
 
               <article className="person person-groom section-reveal">
                 <div className="portrait-frame">
-                  <img className="portrait-photo" src="/assets/demo-groom.jpg" alt="Aldo" />
-                  <img
+                  <Image
+                    className="portrait-photo"
+                    src="/assets/demo-groom.jpg"
+                    alt="Aldo"
+                    width={1200}
+                    height={1800}
+                    quality={95}
+                    sizes="(max-width: 500px) 58vw, 225px"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <Image
                     className="portrait-ornament"
                     src="/assets/section-assets/profile-photo-frame.png"
                     alt=""
+                    width={942}
+                    height={1416}
+                    quality={92}
+                    sizes="(max-width: 500px) 77vw, 300px"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <p className="person-role">The Groom</p>
@@ -806,11 +939,27 @@ export default function Invitation() {
 
               <article className="person person-bride section-reveal">
                 <div className="portrait-frame">
-                  <img className="portrait-photo" src="/assets/demo-bride.jpg" alt="Tiara" />
-                  <img
+                  <Image
+                    className="portrait-photo"
+                    src="/assets/demo-bride.jpg"
+                    alt="Tiara"
+                    width={1200}
+                    height={1800}
+                    quality={95}
+                    sizes="(max-width: 500px) 58vw, 225px"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <Image
                     className="portrait-ornament"
                     src="/assets/section-assets/profile-photo-frame.png"
                     alt=""
+                    width={942}
+                    height={1416}
+                    quality={92}
+                    sizes="(max-width: 500px) 77vw, 300px"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <p className="person-role">The Bride</p>
@@ -824,10 +973,16 @@ export default function Invitation() {
               </article>
             </div>
 
-            <img
+            <Image
               className="profile-bottom-transition"
               src="/assets/section-assets/profile-bottom-transition-matched.png"
               alt=""
+              width={1080}
+              height={349}
+              quality={92}
+              sizes="(max-width: 500px) 100vw, 500px"
+              loading="lazy"
+              decoding="async"
             />
           </section>
 
@@ -838,10 +993,16 @@ export default function Invitation() {
           >
             <div className="save-date-portrait section-reveal">
               <div className="save-date-photo-window">
-                <img
+                <Image
                   className="save-date-photo"
                   src="/assets/demo-couple.jpg"
                   alt="Aldo dan Tiara"
+                  width={1200}
+                  height={1800}
+                  quality={95}
+                  sizes="(max-width: 500px) 54vw, 225px"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
@@ -854,17 +1015,27 @@ export default function Invitation() {
                 <p>save the date</p>
               </div>
 
-              <img
+              <Image
                 className="save-date-frame"
                 src="/assets/section-assets/save-date-photo-frame.png"
                 alt=""
+                width={1023}
+                height={1537}
+                quality={92}
+                sizes="(max-width: 500px) 84vw, 350px"
+                loading="lazy"
+                decoding="async"
               />
             </div>
 
             <SaveDateCountdown />
           </section>
 
-          <section className="event-section" id="event" aria-labelledby="event-title">
+          <section
+            className="event-section section-reveal"
+            id="event"
+            aria-labelledby="event-title"
+          >
             <div className="event-top-ornament" aria-hidden="true" />
 
             <div className="event-main-card">
@@ -906,10 +1077,16 @@ export default function Invitation() {
 
           <section className="rsvp-section" id="rsvp" aria-labelledby="rsvp-title">
             <div className="rsvp-card section-reveal">
-              <img
+              <Image
                 className="rsvp-photo"
                 src="/assets/rsvp-photo.jpg"
                 alt="Foto pasangan Aldo dan Tiara"
+                width={683}
+                height={1024}
+                quality={95}
+                sizes="(max-width: 500px) calc(100vw - 100px), 366px"
+                loading="lazy"
+                decoding="async"
               />
 
               <h2 id="rsvp-title">RSVP</h2>
@@ -969,34 +1146,52 @@ export default function Invitation() {
           </section>
 
           <section className="gallery-section" id="gallery" aria-labelledby="gallery-title">
-            <img
+            <Image
               className="gallery-left-ornament ornament-reveal"
               src="/assets/section-assets/gallery-left-ornament.png"
               alt=""
+              width={1080}
+              height={1920}
+              quality={92}
+              sizes="(max-width: 500px) 62vw, 310px"
+              loading="lazy"
+              decoding="async"
             />
 
             <div className="gallery-inner">
               <h2 id="gallery-title">Gallery</h2>
 
               <div className="gallery-grid gallery-scroll-reveal">
-                {galleryPhotos.map((photo, index) => (
-                  <button
-                    className={`gallery-item ${index >= 16 ? "gallery-item-wide" : ""}`}
-                    key={photo}
-                    type="button"
-                    aria-label={`Buka foto galeri ${index + 1}`}
-                    onClick={() => setActiveGalleryIndex(index)}
-                  >
-                    <img
-                      src={`/assets/gallery-photos/${photo}`}
-                      alt={`Momen Aldo dan Tiara ${index + 1}`}
-                      width={index === 17 ? 1800 : index >= 10 ? 1350 : 1200}
-                      height={index === 17 ? 1352 : 1800}
-                      loading="lazy"
-                    />
-                    <span className="gallery-item-overlay" aria-hidden="true" />
-                  </button>
-                ))}
+                {galleryPhotos.map((photo, index) => {
+                  const { width, height } = getGalleryPhotoSize(index);
+                  const isWide = index >= 16;
+
+                  return (
+                    <button
+                      className={`gallery-item ${isWide ? "gallery-item-wide" : ""}`}
+                      key={photo}
+                      type="button"
+                      aria-label={`Buka foto galeri ${index + 1}`}
+                      onClick={() => setActiveGalleryIndex(index)}
+                    >
+                      <Image
+                        src={`/assets/gallery-photos/${photo}`}
+                        alt={`Momen Aldo dan Tiara ${index + 1}`}
+                        width={width}
+                        height={height}
+                        quality={95}
+                        sizes={
+                          isWide
+                            ? "(max-width: 500px) calc(100vw - 40px), 460px"
+                            : "(max-width: 500px) calc((100vw - 43px) / 2), 229px"
+                        }
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span className="gallery-item-overlay" aria-hidden="true" />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -1022,16 +1217,19 @@ export default function Invitation() {
                       key={`${sequenceIndex}-${photo}`}
                       aria-hidden={sequenceIndex !== 1}
                     >
-                      <img
+                      <Image
                         src={`/assets/story-photos/${photo}`}
                         alt={
                           sequenceIndex === 1
                             ? `Momen kisah cinta Aldo dan Tiara ${index + 1}`
                             : ""
                         }
-                        width="150"
-                        height="150"
-                        loading="eager"
+                        width={150}
+                        height={150}
+                        quality={95}
+                        sizes="(max-width: 500px) calc((100vw - 70px) / 3), 147px"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   )))}
@@ -1213,21 +1411,25 @@ export default function Invitation() {
             <div className="closing-visual section-reveal">
               <div className="closing-frame-wrap">
                 <div className="closing-photo-window">
-                  <img
+                  <Image
                     src="/assets/gallery-photos/isai-jane-w8.jpg"
                     alt="Aldo dan Tiara"
-                    width="1200"
-                    height="1800"
+                    width={1200}
+                    height={1800}
+                    quality={95}
+                    sizes="(max-width: 500px) 50vw, 228px"
                     loading="lazy"
                     decoding="async"
                   />
                 </div>
-                <img
+                <Image
                   className="closing-frame"
                   src="/assets/section-assets/coastal-closing-frame.png"
                   alt=""
-                  width="900"
-                  height="1120"
+                  width={900}
+                  height={1120}
+                  quality={92}
+                  sizes="(max-width: 500px) 77vw, 350px"
                   loading="lazy"
                   decoding="async"
                 />
@@ -1288,9 +1490,15 @@ export default function Invitation() {
             &#8249;
           </button>
 
-          <img
+          <Image
             src={`/assets/gallery-photos/${galleryPhotos[activeGalleryIndex]}`}
             alt={`Momen Aldo dan Tiara ${activeGalleryIndex + 1}`}
+            width={getGalleryPhotoSize(activeGalleryIndex).width}
+            height={getGalleryPhotoSize(activeGalleryIndex).height}
+            quality={95}
+            sizes="100vw"
+            loading="lazy"
+            decoding="async"
             onClick={(event) => event.stopPropagation()}
           />
 
