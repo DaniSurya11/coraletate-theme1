@@ -33,8 +33,8 @@ const loveStoryPhotos = [
 ];
 
 const weddingMusicSrc = "/assets/coralestate-musci1.mp3";
-const weddingMusicStartTime = 25;
-const weddingMusicFadeDuration = 1500;
+const weddingMusicStartTime = 24;
+const weddingMusicFadeDuration = 2000;
 
 const coverFlorals = {
   topLeft: { file: "floral-top-left", width: 507, height: 662 },
@@ -349,7 +349,7 @@ export default function Invitation() {
 
     const animateFade = (currentTime) => {
       const progress = Math.min(
-        (currentTime - startTime) / weddingMusicFadeDuration,
+        Math.max((currentTime - startTime) / weddingMusicFadeDuration, 0),
         1,
       );
 
@@ -855,15 +855,6 @@ export default function Invitation() {
     let isCopied = false;
 
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(number);
-        isCopied = true;
-      }
-    } catch {
-      isCopied = false;
-    }
-
-    if (!isCopied) {
       const copyField = document.createElement("textarea");
       copyField.value = number;
       copyField.setAttribute("readonly", "");
@@ -873,6 +864,8 @@ export default function Invitation() {
       copyField.select();
       isCopied = document.execCommand("copy");
       copyField.remove();
+    } catch {
+      isCopied = false;
     }
 
     if (isCopied) {
