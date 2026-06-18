@@ -32,6 +32,29 @@ const loveStoryPhotos = [
   "isai-jane-w2-150x150.jpg",
 ];
 
+const coverFlorals = {
+  topLeft: { file: "floral-top-left", width: 507, height: 662 },
+  topRight: { file: "floral-top-right", width: 328, height: 579 },
+  bottomLeft: { file: "floral-bottom-left", width: 526, height: 737 },
+  bottomRight: { file: "floral-bottom-right", width: 435, height: 774 },
+};
+
+const CoverFloral = ({ className, floral, priority = false }) => (
+  <picture className="floral-picture" aria-hidden="true">
+    <source srcSet={`/assets/${floral.file}.avif`} type="image/avif" />
+    <source srcSet={`/assets/${floral.file}.webp`} type="image/webp" />
+    <img
+      className={className}
+      src={`/assets/${floral.file}.png`}
+      alt=""
+      width={floral.width}
+      height={floral.height}
+      decoding="async"
+      fetchPriority={priority ? "high" : undefined}
+    />
+  </picture>
+);
+
 const getGalleryPhotoSize = (index) => {
   if (index === 17) {
     return { width: 1800, height: 1352 };
@@ -787,11 +810,15 @@ export default function Invitation() {
         <div className="background" aria-hidden="true" />
         <div className="light-wash" aria-hidden="true" />
 
-        <img className="floral floral-top-left" src="/assets/floral-top-left.png" alt="" />
-        <img className="floral floral-top-right" src="/assets/floral-top-right.png" alt="" />
+        <CoverFloral className="floral floral-top-left" floral={coverFlorals.topLeft} />
+        <CoverFloral className="floral floral-top-right" floral={coverFlorals.topRight} />
         <img className="floral floral-vine" src="/assets/floral-trailing-vine.png" alt="" />
-        <img className="floral floral-bottom-left" src="/assets/floral-bottom-left.png" alt="" />
-        <img className="floral floral-bottom-right" src="/assets/floral-bottom-right.png" alt="" />
+        <CoverFloral className="floral floral-bottom-left" floral={coverFlorals.bottomLeft} />
+        <CoverFloral
+          className="floral floral-bottom-right"
+          floral={coverFlorals.bottomRight}
+          priority
+        />
 
         <section className="cover-content" aria-labelledby="couple-names">
           <div className="invitation-card">

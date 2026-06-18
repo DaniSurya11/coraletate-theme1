@@ -121,6 +121,10 @@ button {
   opacity: 1;
 }
 
+.floral-picture {
+  display: contents;
+}
+
 .floral-top-left {
   top: -5%;
   left: -14%;
